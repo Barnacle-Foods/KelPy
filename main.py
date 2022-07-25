@@ -217,7 +217,7 @@ def extract_essentials(dir: str, ext: bool):
 
     for filename in os.listdir(dir):
         infilename = os.path.join(dir, filename)
-        if infilename.endswith('report.pdf') or infilename.endswith('odm_orthophoto.tif') or infilename.endswith('colormap.tif') or infilename.endswith('kelp_area.txt'):
+        if infilename.endswith('report.pdf') or infilename.endswith('odm_orthophoto.tif') or infilename.endswith('colormap.tif') or infilename.endswith('.kmz'):
            continue 
         elif infilename.endswith('.zip'):
             os.remove(infilename)
