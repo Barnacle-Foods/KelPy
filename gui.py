@@ -3,7 +3,6 @@
 # Author: Chet Russell
 # Last edited: 7/25/2022 - Chet Russell
 
-from tkinter import W
 import PySimpleGUI as sg
 from main import masker
 from main import orthorec
@@ -149,6 +148,7 @@ while True:  # Event Loop
                         values["ft"],
                         False,
                     )
+                    ort.update("Orthorectification: DONE")
                     value = float(calculate_gsd(values["dwndir"] + "/report.pdf"))
                     sg.popup(
                         seg(
@@ -159,6 +159,7 @@ while True:  # Event Loop
                         ),
                         title="results",
                     )
+                    ki.update("Identification (Kelpomatic): DONE")
 
                 except:
                     sg.popup("ERROR: Problem processing request.")

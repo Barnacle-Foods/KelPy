@@ -10,7 +10,6 @@ import PyPDF2
 import hakai_segmentation
 import rasterio
 import zipfile
-import black
 from PIL import Image
 from glint_mask_tools import RGBThresholdMasker
 from pyodm import Node, exceptions
@@ -281,6 +280,7 @@ def extract_essentials(dir: str, ext: bool):
             or infilename.endswith("odm_orthophoto.tif")
             or infilename.endswith("colormap.tif")
             or infilename.endswith(".KML")
+            or infilename.endswith("kelp_area.txt")
         ):
             continue
         elif infilename.endswith(".zip"):
@@ -302,16 +302,12 @@ wanted to do.
 
 
 def calculate_gsd(pdfdir: str):
-
     pdfFileObj = open(pdfdir, "rb")
-
     # create a pdf reader object
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-
     # creating a page object
     pageObj = pdfReader.getPage(0)
-
-    # extracte text from page
+    # extract text from page
     pdf = pageObj.extractText()
 
     words = pdf.split(" ")
@@ -323,3 +319,11 @@ def calculate_gsd(pdfdir: str):
     pdfFileObj.close()
 
     return tmp
+
+
+""" ------------------------- RESIZE FUNCTION -----------------------
+This function takes the pdf report from ODM and scrapes the GSD value from it.
+:param imgpath: The directory where the image is stored.
+------------------------------------------------------------------------ """
+
+# def resize(imgpath: str):
