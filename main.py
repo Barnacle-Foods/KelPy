@@ -1,7 +1,7 @@
 # Barnacle imagery project main file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 7/25/2022 - Chet Russell
+# Last edited: 7/26/2022 - Chet Russell
 
 from distutils.command.clean import clean
 import os

@@ -1,7 +1,7 @@
 # Barnacle imagery project gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 7/25/2022 - Chet Russell
+# Last edited: 7/26/2022 - Chet Russell
 
 import PySimpleGUI as sg
 from main import masker
