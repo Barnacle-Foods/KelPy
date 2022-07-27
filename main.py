@@ -180,10 +180,10 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 },
             )
             cmap = dst.colormap(1)
-            # True
-            assert cmap[0] == (0, 0, 255, 255)
-            # True
-            assert cmap[1] == (255, 255, 0, 255)
+            ## True
+            #assert cmap[0] == (0, 0, 255, 255)
+            ## True
+            #assert cmap[1] == (255, 255, 0, 255)
             ## True
             # assert cmap[2] == (0, 255, 0, 255)
             ## True
