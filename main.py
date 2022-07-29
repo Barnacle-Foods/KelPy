@@ -3,7 +3,6 @@
 # Author: Chet Russell
 # Last edited: 7/26/2022 - Chet Russell
 
-from distutils.command.clean import clean
 import os
 import shutil
 import PyPDF2
@@ -125,6 +124,8 @@ def orthorec(
 
             extract_essentials(dwndir, True)
 
+            compress_tif(dwndir + "odm_orthophoto.tif", dwndir + "viewableOrtho.jpg")
+
         except exceptions.TaskFailedError as e:
             print("\n".join(task.output()))
     except exceptions.NodeConnectionError as e:
@@ -215,7 +216,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
     # Printing the kelp surface area onto a .txt file
     with open(komp + "/kelp_area.txt", "a") as f:
         f.write("kelp area cm^2: " + str(kcm))
-        f.write("kelp area m^2: " + str(kcm * 0.01))
+        f.write("\nkelp area m^2: " + str(kcm * 0.01))
         f.write("\nkelp area acres: " + str(kacres))
         f.write("\nno kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
         # f.write('\nbull kelp pixels=' + str(bull)+', giant kelp pixels='+str(giant))
@@ -260,7 +261,7 @@ def clean_masks(imgdir: str):
 """ --------------------- EXTRACT_ESSENTIALS FUNCTION ----------------------
 This function takes a directory and deletes all files except for the ODM
 report, the orthomosaic, the kmz file, the colormap and the kelp area report.
-:param imgdir: The directory where the files are stored.
+:param dir: The directory where the files are stored.
 :param ext: Boolean value to determine if the report and orthophoto should be
             grabbed.
 ------------------------------------------------------------------------ """
@@ -321,9 +322,13 @@ def calculate_gsd(pdfdir: str):
     return tmp
 
 
-""" ------------------------- RESIZE FUNCTION -----------------------
-This function takes the pdf report from ODM and scrapes the GSD value from it.
-:param imgpath: The directory where the image is stored.
+""" ------------------------- COMPRESS_TIF FUNCTION -----------------------
+This function takes a .tif file and compresses it, turning it into a viewable JPG file.
+:param imgname: The path where the image is stored.
+:param savename: The path where the new JPG is saved to.
 ------------------------------------------------------------------------ """
 
-# def resize(imgpath: str):
+def compress_tif(imgname: str, savename: str):
+    img = Image.open(imgname)
+    rgb_im = img.convert('RGB')
+    rgb_im.save(savename, optimize=True, quality=65)
