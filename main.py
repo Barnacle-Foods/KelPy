@@ -1,7 +1,7 @@
 # Barnacle imagery project main file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 7/26/2022 - Chet Russell
+# Last edited: 7/29/2022 - Chet Russell
 
 import os
 import shutil
@@ -180,11 +180,11 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                     # 3: (255, 0 , 0, 255)
                 },
             )
-            cmap = dst.colormap(1)
+            # cmap = dst.colormap(1)
             ## True
-            #assert cmap[0] == (0, 0, 255, 255)
+            # assert cmap[0] == (0, 0, 255, 255)
             ## True
-            #assert cmap[1] == (255, 255, 0, 255)
+            # assert cmap[1] == (255, 255, 0, 255)
             ## True
             # assert cmap[2] == (0, 255, 0, 255)
             ## True
@@ -328,7 +328,8 @@ This function takes a .tif file and compresses it, turning it into a viewable JP
 :param savename: The path where the new JPG is saved to.
 ------------------------------------------------------------------------ """
 
+
 def compress_tif(imgname: str, savename: str):
     img = Image.open(imgname)
-    rgb_im = img.convert('RGB')
+    rgb_im = img.convert("RGB")
     rgb_im.save(savename, optimize=True, quality=65)
