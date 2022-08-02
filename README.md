@@ -40,6 +40,9 @@ GSD (Ground Sampling Distance) - Sampling distance calculated in the orthorectif
 ### Acknowledgment
 
 This application uses the following repositories:
+
 https://github.com/HakaiInstitute/GlintMaskGenerator
+
 https://github.com/HakaiInstitute/hakai-segmentation
+
 https://github.com/OpenDroneMap/NodeODM
