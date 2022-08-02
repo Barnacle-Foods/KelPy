@@ -15,12 +15,19 @@ After this, you are ready to go!
 ### Flags and variables
 
 Image Folder - Directory where your drone images are stored.
+
 Results Folder - Directory where you want to store the results.
+
 Pixel Buffer - A glint-mask-generator flag. Default is 5. [Link](https://github.com/HakaiInstitute/GlintMaskGenerator)
+
 Quality - ODM option to determine quality of the orthomosaic generated. Default is high. [Link](https://docs.opendronemap.org/arguments/pc-quality/)
+
 Crop - ODM option to crop dataset boundaries. Default is 0. [Link](https://docs.opendronemap.org/arguments/crop/)
+
 Feature-type algorithm - ODM option to determine feature types. Default is sift. [Link](https://docs.opendronemap.org/arguments/feature-type/)
+
 Species classification - Use species classification. [Link](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation)
+
 
 ## Flags for independent identification
 Orthomosaic File - The orthomosaic image you want to process.
