@@ -1,7 +1,7 @@
 # Barnacle imagery project main file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 7/29/2022 - Chet Russell
+# Last edited: 8/2/2022 - Chet Russell
 
 import os
 import shutil
@@ -124,7 +124,7 @@ def orthorec(
 
             extract_essentials(dwndir, True)
 
-            compress_tif(dwndir + "odm_orthophoto.tif", dwndir + "viewableOrtho.jpg")
+            compress_tif(dwndir + "/odm_orthophoto.tif", dwndir + "/viewableOrtho.jpg")
 
         except exceptions.TaskFailedError as e:
             print("\n".join(task.output()))
@@ -222,7 +222,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
         # f.write('\nbull kelp pixels=' + str(bull)+', giant kelp pixels='+str(giant))
         # f.write('\nbull kelp area acres=' + str(bacres)+', giant kelp acres='+str(gacres))
 
-    extract_essentials(komp, False)
+    #extract_essentials(komp, False)
 
     print("no kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
     print("kelp area (cm^2):" + str(kcm))
@@ -327,7 +327,6 @@ This function takes a .tif file and compresses it, turning it into a viewable JP
 :param imgname: The path where the image is stored.
 :param savename: The path where the new JPG is saved to.
 ------------------------------------------------------------------------ """
-
 
 def compress_tif(imgname: str, savename: str):
     img = Image.open(imgname)
