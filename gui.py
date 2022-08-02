@@ -1,7 +1,7 @@
 # Barnacle imagery project gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 7/26/2022 - Chet Russell
+# Last edited: 8/2/2022 - Chet Russell
 
 import PySimpleGUI as sg
 from main import masker
@@ -68,11 +68,10 @@ layout = [
         sg.InputText(size=(5, 1), key="gsd"),
         sg.Text("Only required when running independently.", font=("Helvetica", 8)),
     ],
-    # WORK IN PROGRESS
-    # [
-    #    sg.Text("Species classification:"),
-    #    sg.Combo([True, False],default_value='False',key='spec')
-    # ],
+    [
+        sg.Text("Species classification (default value false):"),
+        sg.Combo([True, False], default_value=False, key="spec"),
+    ],
     [sg.Button("Run Identification Independently")],
     [sg.Button("Run All", font=("Helvetica", 20))],
 ]
@@ -122,7 +121,12 @@ while True:  # Event Loop
                         value = float(values["gsd"])
                         ki.update("Identification (Kelpomatic): DONE")
                         sg.popup(
-                            seg(values["orthfile"], values["resdir"], value, False),
+                            seg(
+                                values["orthfile"],
+                                values["resdir"],
+                                value,
+                                values["spec"],
+                            ),
                             title="results",
                         )
 
@@ -155,7 +159,7 @@ while True:  # Event Loop
                             values["dwndir"] + "/odm_orthophoto.tif",
                             values["dwndir"],
                             value,
-                            False,
+                            values["spec"],
                         ),
                         title="results",
                     )
