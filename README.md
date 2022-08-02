@@ -7,8 +7,9 @@ An application that streamlines orthorectification and kelp area calculation in 
 
 Before installing, you must have a NodeODM node running locally via:
 
+```sh
   $ docker run -ti -p 3000:3000 opendronemap/nodeodm
-  
+```
 After this, you are ready to go!
 
 ### Flags and variables
