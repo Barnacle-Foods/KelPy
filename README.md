@@ -1,4 +1,4 @@
-# barnacle-imagery
+# Kelpy
 An application that streamlines orthorectification and kelp area calculation in a simple to use application.
 
 ---
