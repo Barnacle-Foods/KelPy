@@ -1,5 +1,5 @@
 # barnacle-imagery
-####An application that streamlines orthorectification and kelp area calculation in a simple to use application.
+An application that streamlines orthorectification and kelp area calculation in a simple to use application.
 
 ---
 
@@ -37,7 +37,7 @@ Results Folder - The folder you want to save your results to.
 
 GSD (Ground Sampling Distance) - Sampling distance calculated in the orthorectification step. Should be located in the ODM report.
 
-### Acknowledgment
+## Acknowledgment
 
 This application uses the following repositories:
 
