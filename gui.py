@@ -76,7 +76,7 @@ layout = [
     [sg.Button("Run All", font=("Helvetica", 20))],
 ]
 
-window = sg.Window("Kelpy", layout, size=(700, 700))
+window = sg.Window("Kelpy", layout, size=(500, 500))
 ort = window["ort"]
 ki = window["ki"]
 

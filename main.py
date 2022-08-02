@@ -157,9 +157,19 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
     giant = 0
 
     kom = komp + "/kelpomatic.tif"
+    ext1 = ""
+    ext2 = ""
+
+    if spec == False or spec == "0":
+        ext1 = "/colormap.tif"
+        ext2 = "/kelp_area.txt"
+    elif spec == True or spec == '1':
+        ext1 = "/species_colormap.tif"
+        ext2 = "/species_kelp_area.txt"
 
     # Calling the kelpomatic tool
     hakai_segmentation.find_kelp(ortho, kom, species=spec, use_gpu=True)
+
 
     # Writing the colormap
     with rasterio.Env():
@@ -168,7 +178,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
             shade = src.read(1)
             meta = src.meta
 
-        with rasterio.open(komp + "/colormap.tif", "w", **meta) as dst:
+        with rasterio.open(komp + ext1, "w", **meta) as dst:
             dst.write(shade, indexes=1)
             # If species differentiation is turned off
             if spec == False or spec == "0":
@@ -192,7 +202,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 )
 
     # Calculating the kelp pixels
-    with Image.open(komp + "/colormap.tif") as im:
+    with Image.open(komp + ext1) as im:
 
         # If species differentiation is turned off
         if spec == False or spec == "0":
@@ -224,7 +234,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
     gacres = gcm * 0.000000024711
 
     # Printing the kelp surface area onto a .txt file
-    with open(komp + "/kelp_area.txt", "a") as f:
+    with open(komp + ext2, "a") as f:
         # If species differentiation is turned off
         if spec == False or spec == "0":
             f.write("kelp area cm^2: " + str(kcm))
@@ -238,7 +248,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
         # If species differentiation is turned off
         elif spec == True or spec == "1":
             f.write(
-                "\nbull kelp area cm^2="
+                "bull kelp area cm^2="
                 + str(bcm)
                 + ", bull kelp area acres="
                 + str(bacres)
@@ -332,8 +342,10 @@ def extract_essentials(dir: str, ext: bool):
             infilename.endswith("report.pdf")
             or infilename.endswith("odm_orthophoto.tif")
             or infilename.endswith("colormap.tif")
+            or infilename.endswith("species_colormap.tif")
             or infilename.endswith(".KML")
             or infilename.endswith("kelp_area.txt")
+            or infilename.endswith("species_kelp_area.txt")
         ):
             continue
         elif infilename.endswith(".zip"):
