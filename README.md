@@ -1,5 +1,5 @@
-# barnacle-imagery
-An application that streamlines orthorectification and kelp area calculation in a simple to use application.
+### barnacle-imagery
+####An application that streamlines orthorectification and kelp area calculation in a simple to use application.
 
 ---
 
@@ -30,8 +30,11 @@ Species classification - Use species classification. [Link](https://hakai-segmen
 
 
 ## Flags for independent identification
+
 Orthomosaic File - The orthomosaic image you want to process.
+
 Results Folder - The folder you want to save your results to.
+
 GSD (Ground Sampling Distance) - Sampling distance calculated in the orthorectification step. Should be located in the ODM report.
 
 ### Acknowledgment
