@@ -6,19 +6,17 @@ An application that streamlines orthorectification and kelp area calculation in 
 
 ## Installation
 
-  Before installing, you must have a NodeODM node running locally via:
+  Before installing, you must have a [NodeODM](https://github.com/OpenDroneMap/NodeODM) node running locally via:
 
 ```sh
   $ docker run -ti -p 3000:3000 opendronemap/nodeodm
 ```
 
-  You can use GPU acceleration with the command:
+  Or you can use GPU acceleration with the command:
   
 ```sh
   $ docker run -p 3000:3000 --gpus all opendronemap/nodeodm:gpu
 ```
-
-  [More information about NodeODM](https://github.com/OpenDroneMap/NodeODM)
   
   After this, you are ready to go!
   
@@ -29,15 +27,15 @@ An application that streamlines orthorectification and kelp area calculation in 
 
   Results Folder - Directory where you want to store the results.
 
-  Pixel Buffer - A glint-mask-generator flag. Default is 5. [Link](https://github.com/HakaiInstitute/GlintMaskGenerator)
+  Pixel Buffer - [A glint-mask-generator flag](https://github.com/HakaiInstitute/GlintMaskGenerator). Default is 5. 
+  
+  Quality - [ODM option](https://docs.opendronemap.org/arguments/pc-quality/) to determine quality of the orthomosaic generated. Default is high.
 
-  Quality - ODM option to determine quality of the orthomosaic generated. Default is high. [Link](https://docs.opendronemap.org/arguments/pc-quality/)
+  Crop -  [ODM option](https://docs.opendronemap.org/arguments/crop/) to crop dataset boundaries. Default is 0.
 
-  Crop - ODM option to crop dataset boundaries. Default is 0. [Link](https://docs.opendronemap.org/arguments/crop/)
+  Feature-type algorithm - [ODM option](https://docs.opendronemap.org/arguments/feature-type/) to determine feature types. Default is sift.
 
-  Feature-type algorithm - ODM option to determine feature types. Default is sift. [Link](https://docs.opendronemap.org/arguments/feature-type/)
-
-  Species classification - Use species classification. [Link](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation)
+  Species classification - [Hakai-segmentation](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation) option to determine whether or not to differentiate between bullkelp and giantkelp.
 
 
 ### Flags for independent identification
