@@ -1,9 +1,9 @@
-### barnacle-imagery
+# barnacle-imagery
 ####An application that streamlines orthorectification and kelp area calculation in a simple to use application.
 
 ---
 
-### Installation
+## Installation
 
 Before installing, you must have a NodeODM node running locally via:
 
@@ -29,7 +29,7 @@ Feature-type algorithm - ODM option to determine feature types. Default is sift.
 Species classification - Use species classification. [Link](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation)
 
 
-## Flags for independent identification
+### Flags for independent identification
 
 Orthomosaic File - The orthomosaic image you want to process.
 
