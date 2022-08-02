@@ -11,6 +11,13 @@ An application that streamlines orthorectification and kelp area calculation in 
 ```sh
   $ docker run -ti -p 3000:3000 opendronemap/nodeodm
 ```
+
+  You can use GPU acceleration using:
+  
+```sh
+  $ docker run -p 3000:3000 --gpus all opendronemap/nodeodm:gpu
+```
+
   After this, you are ready to go!
   
 
