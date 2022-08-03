@@ -1,5 +1,5 @@
 # Kelpy
-An application that streamlines orthorectification and kelp area calculation in a simple to use application.
+### Streamlining orthorectification and kelp identification
 
 ---
 
