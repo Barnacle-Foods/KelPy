@@ -96,7 +96,7 @@ def window():
         [sg.Button("Run All", font=("Helvetica", 20))],
     ]
 
-    return sg.Window("Kelpy", layout)  # size=(700, 700))
+    return sg.Window("Kelpy", layout, finalize=True)  # size=(700, 700))
 
 
 """ ------------------------ MAINWIN FUNCTION ---------------------------
@@ -106,9 +106,10 @@ creates a window.
 
 
 def mainwin():
+    newwin = window()
     while True:  # Event Loop
-
-        event, values = window().read()
+        
+        event, values = newwin.read()
         print(event, values)
         if event == sg.WIN_CLOSED:
             break
@@ -121,23 +122,31 @@ def mainwin():
                 if values["dwndir"] == "":
                     sg.popup("ERROR: No results folder selected.", title="ERROR")
                 else:
-                    try:
-                        window().perform_long_operation()
-                        newdir = values["dwndir"] + "/" + values["newdir"]
-                        os.mkdir(newdir)
-                        masker(values["imgdir"], values["pb"])
-                        orthorec(
-                            values["imgdir"],
-                            newdir,
-                            values["q"],
-                            values["crop"],
-                            values["kmz"],
-                            values["ft"],
-                            False,
-                        )
-                        # ort.update("Orthorectification: DONE")
-                    except:
-                        sg.popup("ERROR 1: Problem processing request.")
+                    if values["newdir"] == "":
+                        sg.popup("ERROR: No name for results.", title="ERROR")
+                    else:
+                        try:
+                            newdir = values["dwndir"] + "/" + values["newdir"]
+                            os.mkdir(newdir)
+                            newwin.perform_long_operation(lambda: masker(values["imgdir"], values["pb"]), end_key="MASKDONE")
+                            newwin.read()
+                            newwin.perform_long_operation(lambda: orthorec(
+                                values["imgdir"],
+                                newdir,
+                                values["q"],
+                                values["crop"],
+                                False,
+                                values["ft"],
+                                False,
+                                ),
+                                end_key="ORTHDONE"
+                            )
+                            newwin.read()
+                            # ort.update("Orthorectification: DONE")
+                        except:
+                            # Cleaning up masks in the event of an error
+                            clean_masks(values["imgdir"])
+                            sg.popup("ERROR 1: Problem processing request.")
 
         # Running Kelpomatic
         if event == "Run Identification Independently":
@@ -150,27 +159,28 @@ def mainwin():
                     if values["gsd"] == "":
                         sg.popup("ERROR: GSD value empty.", title="ERROR")
                     else:
-                        if isinstance(values["gsd"], int) == True:
+                        value = float(values["gsd"])
+                        if isinstance(value, float):
                             try:
-                                window().perform_long_operation()
-                                value = float(values["gsd"])
-                                # ki.update("Identification (Kelpomatic): DONE")
-                                sg.popup(
-                                    seg(
-                                        values["orthfile"],
-                                        values["resdir"],
-                                        value,
-                                        values["spec"],
-                                    ),
-                                    title="results",
-                                )
+                                newwin.perform_long_operation(
+                                    lambda: 
+                                        seg(
+                                            values["orthfile"],
+                                            values["resdir"],
+                                            value,
+                                            values["spec"],
+                                        ),
+                                        end_key="SEGDONE"
+                                    )
+                                newwin.read()
 
                             except:
+                                # Cleaning up masks in the event of an error
                                 sg.popup("ERROR 2: Problem processing request.")
                         else:
                             sg.popup("ERROR: GSD not an integer value.")
 
-        # Running together
+        # Running both orthorectification and kelpomatic together
         if event == "Run All":
             if values["imgdir"] == "":
                 sg.popup("ERROR: No image folder selected.", title="ERROR")
@@ -179,35 +189,40 @@ def mainwin():
                     sg.popup("ERROR: No results folder selected.", title="ERROR")
                 else:
                     try:
-                        window().perform_long_operation()
+                        # This is the folder that is being created
                         newdir = values["dwndir"] + "/" + values["newdir"]
                         os.mkdir(newdir)
-                        masker(values["imgdir"], values["pb"])
-                        orthorec(
-                            values["imgdir"],
-                            newdir,
-                            values["q"],
-                            values["crop"],
-                            False,
-                            values["ft"],
-                            False,
-                        )
-                        # ort.update("Orthorectification: DONE")
-                        value = float(calculate_gsd(newdir + "/report.pdf"))
-                        sg.popup(
-                            seg(
-                                newdir + "/odm_orthophoto.tif",
+                        # Some multithreading here. Reading between each operation to update gui.
+                        newwin.perform_long_operation(lambda: masker(values["imgdir"], values["pb"]), end_key="MASKDONE2")
+                        newwin.read()
+                        newwin.perform_long_operation(lambda: orthorec(
+                                values["imgdir"],
                                 newdir,
-                                value,
-                                values["spec"],
-                            ),
-                            title="results",
+                                values["q"],
+                                values["crop"],
+                                False,
+                                values["ft"],
+                                False,
+                                ),
+                                end_key="ORTHDONE2"
                         )
-                        # ki.update("Identification (Kelpomatic): DONE")
+                        newwin.read()
+                        value = float(calculate_gsd(newdir + "/report.pdf"))
+                        newwin.perform_long_operation(
+                                    lambda: 
+                                        seg(
+                                            newdir + "/odm_orthophoto.tif",
+                                            newdir,
+                                            value,
+                                            values["spec"],
+                                        ),
+                                        end_key="SEGDONE2"
+                                    )
+                        newwin.read()
 
                     except:
                         # Cleaning up masks in the event of an error
                         clean_masks(values["imgdir"])
                         sg.popup("ERROR 3: Problem processing request.")
 
-    window.close()
+    newwin.close()

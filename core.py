@@ -272,36 +272,6 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 + str(giant)
             )
 
-    # If species differentiation is turned off
-    if spec == False or spec == "0":
-        return (
-            "kelp area cm^2: "
-            + str(kcm)
-            + "\nkelp area m^2: "
-            + str(kcm * 0.01)
-            + "\nkelp area acres: "
-            + str(kacres)
-            + "\nno kelp pixels="
-            + str(no_kelp)
-            + ", kelp pixels="
-            + str(kelp)
-        )
-
-    # If species differentiation is turned on
-    if spec == True or spec == "1":
-        return (
-            "bull kelp area acres: "
-            + str(bacres)
-            + "\ngiant kelp area acres: "
-            + str(gacres)
-            + "\nno kelp pixels="
-            + str(no_kelp)
-            + ", bull kelp pixels="
-            + str(bull)
-            + ", giant kelp pixels="
-            + str(giant)
-        )
-
 
 """ ---------------------------- CLEAN_MASK FUNCTION -----------------------
 This function takes an image directory and deletes all mask files located
