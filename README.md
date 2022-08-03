@@ -50,7 +50,7 @@
 
 ## Acknowledgment
 
-  This application uses the following repositories:
+  This application uses code from the following repositories:
 
   https://github.com/HakaiInstitute/GlintMaskGenerator
 
