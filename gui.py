@@ -157,7 +157,7 @@ def mainwin():
                             newdir = values["dwndir"] + "/" + values["newdir"]
                             os.mkdir(newdir)
                             
-                            threading.Thread(target=ortho_function_thread, args=(newwin, values["imgdir"], values["pb"], values["newdir"], values["q"], values["crop"], False, values["ft"], False,), daemon=True).start()
+                            threading.Thread(target=ortho_function_thread, args=(newwin, values["imgdir"], values["pb"], newdir, values["q"], values["crop"], False, values["ft"], False,), daemon=True).start()
                             loading = True
                             # ort.update("Orthorectification: DONE")
                         except:
@@ -184,10 +184,11 @@ def mainwin():
                                 loading = True
 
                             except:
+                                loading = False
                                 # Cleaning up masks in the event of an error
                                 sg.popup("ERROR 2: Problem processing request.")
                         else:
-                            loading = False
+                            
                             sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
@@ -203,7 +204,7 @@ def mainwin():
                         newdir = values["dwndir"] + "/" + values["newdir"]
                         os.mkdir(newdir)
                         # Some multithreading here. Reading between each operation to update gui.
-                        threading.Thread(target=all_function_thread, args=(newwin, values["imgdir"], values["pb"], values["newdir"], values["q"], values["crop"], False, values["ft"], False, newdir + "/odm_orthophoto.tif", newdir, values["spec"],), daemon=True).start()
+                        threading.Thread(target=all_function_thread, args=(newwin, values["imgdir"], values["pb"], newdir, values["q"], values["crop"], False, values["ft"], False, newdir + "/odm_orthophoto.tif", newdir, values["spec"],), daemon=True).start()
                         loading = True
 
                     except:
