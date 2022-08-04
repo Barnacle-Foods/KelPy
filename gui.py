@@ -132,7 +132,7 @@ def mainwin():
 
         #sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
         if loading == True:
-            sg.popup_animated(image_source="Wheel.gif")
+            sg.popup_animated(image_source="Wheel.gif", grab_anywhere=False, keep_on_top=True, message="Processing...")
         else:
             sg.popup_animated(image_source=None)
         if event == sg.WIN_CLOSED:
