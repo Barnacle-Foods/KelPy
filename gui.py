@@ -12,24 +12,30 @@ from core import seg
 from core import calculate_gsd
 from core import clean_masks
 
+
 def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
-    window.write_event_value('-THREAD START-', '')
+    window.write_event_value("-THREAD START-", "")
     masker(imgdir, pb)
     orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
-    window.write_event_value('-THREAD DONE-', '')
+    window.write_event_value("-THREAD DONE-", "")
+
 
 def seg_function_thread(window, ortho, komp, gsd, spec):
-    window.write_event_value('-THREAD START-', '')
+    window.write_event_value("-THREAD START-", "")
     seg(ortho, komp, gsd, spec)
-    window.write_event_value('-THREAD DONE-', '')
+    window.write_event_value("-THREAD DONE-", "")
 
-def all_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif, ortho, komp, spec):
-    window.write_event_value('-THREAD START-', '')
+
+def all_function_thread(
+    window, imgdir, pb, newdir, q, crop, kmz, ft, exif, ortho, komp, spec
+):
+    window.write_event_value("-THREAD START-", "")
     masker(imgdir, pb)
     orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
     value = float(calculate_gsd(newdir + "/report.pdf"))
     seg(ortho, komp, value, spec)
-    window.write_event_value('-THREAD DONE-', '')
+    window.write_event_value("-THREAD DONE-", "")
+
 
 """ ------------------------ WINDOW FUNCTION ---------------------------
 This function creates the information necessary to make a window.
@@ -130,9 +136,14 @@ def mainwin():
     while True:  # Event Loop
         event, values = newwin.read(timeout=100)
 
-        #sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
+        # sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
         if loading == True:
-            sg.popup_animated(image_source="Wheel.gif", grab_anywhere=False, keep_on_top=True, message="Processing...")
+            sg.popup_animated(
+                image_source="Wheel.gif",
+                grab_anywhere=False,
+                keep_on_top=True,
+                message="Processing...",
+            )
         else:
             sg.popup_animated(image_source=None)
         if event == sg.WIN_CLOSED:
@@ -156,8 +167,22 @@ def mainwin():
                         try:
                             newdir = values["dwndir"] + "/" + values["newdir"]
                             os.mkdir(newdir)
-                            
-                            threading.Thread(target=ortho_function_thread, args=(newwin, values["imgdir"], values["pb"], newdir, values["q"], values["crop"], False, values["ft"], False,), daemon=True).start()
+
+                            threading.Thread(
+                                target=ortho_function_thread,
+                                args=(
+                                    newwin,
+                                    values["imgdir"],
+                                    values["pb"],
+                                    newdir,
+                                    values["q"],
+                                    values["crop"],
+                                    False,
+                                    values["ft"],
+                                    False,
+                                ),
+                                daemon=True,
+                            ).start()
                             loading = True
                             # ort.update("Orthorectification: DONE")
                         except:
@@ -180,7 +205,17 @@ def mainwin():
                         value = float(values["gsd"])
                         if isinstance(value, float):
                             try:
-                                threading.Thread(target=seg_function_thread, args=(newwin, values["orthfile"], values["resdir"], value, values["spec"],), daemon=True).start()
+                                threading.Thread(
+                                    target=seg_function_thread,
+                                    args=(
+                                        newwin,
+                                        values["orthfile"],
+                                        values["resdir"],
+                                        value,
+                                        values["spec"],
+                                    ),
+                                    daemon=True,
+                                ).start()
                                 loading = True
 
                             except:
@@ -188,7 +223,7 @@ def mainwin():
                                 # Cleaning up masks in the event of an error
                                 sg.popup("ERROR 2: Problem processing request.")
                         else:
-                            
+
                             sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
@@ -204,7 +239,24 @@ def mainwin():
                         newdir = values["dwndir"] + "/" + values["newdir"]
                         os.mkdir(newdir)
                         # Some multithreading here. Reading between each operation to update gui.
-                        threading.Thread(target=all_function_thread, args=(newwin, values["imgdir"], values["pb"], newdir, values["q"], values["crop"], False, values["ft"], False, newdir + "/odm_orthophoto.tif", newdir, values["spec"],), daemon=True).start()
+                        threading.Thread(
+                            target=all_function_thread,
+                            args=(
+                                newwin,
+                                values["imgdir"],
+                                values["pb"],
+                                newdir,
+                                values["q"],
+                                values["crop"],
+                                False,
+                                values["ft"],
+                                False,
+                                newdir + "/odm_orthophoto.tif",
+                                newdir,
+                                values["spec"],
+                            ),
+                            daemon=True,
+                        ).start()
                         loading = True
 
                     except:
@@ -214,6 +266,5 @@ def mainwin():
                         sg.popup("ERROR 3: Problem processing request.")
         else:
             continue
-        
-    
+
     newwin.close()
