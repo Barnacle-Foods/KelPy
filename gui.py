@@ -4,6 +4,7 @@
 # Last edited: 8/3/2022 - Chet Russell
 
 import os
+import threading
 import PySimpleGUI as sg
 from core import masker
 from core import orthorec
@@ -11,6 +12,24 @@ from core import seg
 from core import calculate_gsd
 from core import clean_masks
 
+def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
+    window.write_event_value('-THREAD START-', '')
+    masker(imgdir, pb)
+    orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
+    window.write_event_value('-THREAD DONE-', '')
+
+def seg_function_thread(window, ortho, komp, gsd, spec):
+    window.write_event_value('-THREAD START-', '')
+    seg(ortho, komp, gsd, spec)
+    window.write_event_value('-THREAD DONE-', '')
+
+def all_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif, ortho, komp, spec):
+    window.write_event_value('-THREAD START-', '')
+    masker(imgdir, pb)
+    orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
+    value = float(calculate_gsd(newdir + "/report.pdf"))
+    seg(ortho, komp, value, spec)
+    window.write_event_value('-THREAD DONE-', '')
 
 """ ------------------------ WINDOW FUNCTION ---------------------------
 This function creates the information necessary to make a window.
@@ -107,15 +126,24 @@ creates a window.
 
 def mainwin():
     newwin = window()
+    loading = False
     while True:  # Event Loop
-        
-        event, values = newwin.read()
-        print(event, values)
+        event, values = newwin.read(timeout=100)
+
+        #sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
+        if loading == True:
+            sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
+        else:
+            sg.popup_animated(image_source=None)
         if event == sg.WIN_CLOSED:
             break
+        elif event == "-THREAD DONE-":
+            loading = False
+        elif event == "-THREAD START-":
+            loading = True
 
         # Running the glint mask generator and the ODM orthomosaic generator
-        if event == "Run Orthorectification Independently":
+        elif event == "Run Orthorectification Independently":
             if values["imgdir"] == "":
                 sg.popup("ERROR: No image folder selected.", title="ERROR")
             else:
@@ -128,28 +156,18 @@ def mainwin():
                         try:
                             newdir = values["dwndir"] + "/" + values["newdir"]
                             os.mkdir(newdir)
-                            newwin.perform_long_operation(lambda: masker(values["imgdir"], values["pb"]), end_key="MASKDONE")
-                            newwin.read()
-                            newwin.perform_long_operation(lambda: orthorec(
-                                values["imgdir"],
-                                newdir,
-                                values["q"],
-                                values["crop"],
-                                False,
-                                values["ft"],
-                                False,
-                                ),
-                                end_key="ORTHDONE"
-                            )
-                            newwin.read()
+                            
+                            threading.Thread(target=ortho_function_thread, args=(newwin, values["imgdir"], values["pb"], values["newdir"], values["q"], values["crop"], False, values["ft"], False,), daemon=True).start()
+                            loading = True
                             # ort.update("Orthorectification: DONE")
                         except:
                             # Cleaning up masks in the event of an error
+                            loading = False
                             clean_masks(values["imgdir"])
                             sg.popup("ERROR 1: Problem processing request.")
 
         # Running Kelpomatic
-        if event == "Run Identification Independently":
+        elif event == "Run Identification Independently":
             if values["orthfile"] == "":
                 sg.popup("ERROR: No orthomosaic file selected.", title="ERROR")
             else:
@@ -162,26 +180,18 @@ def mainwin():
                         value = float(values["gsd"])
                         if isinstance(value, float):
                             try:
-                                newwin.perform_long_operation(
-                                    lambda: 
-                                        seg(
-                                            values["orthfile"],
-                                            values["resdir"],
-                                            value,
-                                            values["spec"],
-                                        ),
-                                        end_key="SEGDONE"
-                                    )
-                                newwin.read()
+                                threading.Thread(target=seg_function_thread, args=(newwin, values["orthfile"], values["resdir"], value, values["spec"],), daemon=True).start()
+                                loading = True
 
                             except:
                                 # Cleaning up masks in the event of an error
                                 sg.popup("ERROR 2: Problem processing request.")
                         else:
+                            loading = False
                             sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
-        if event == "Run All":
+        elif event == "Run All":
             if values["imgdir"] == "":
                 sg.popup("ERROR: No image folder selected.", title="ERROR")
             else:
@@ -193,36 +203,16 @@ def mainwin():
                         newdir = values["dwndir"] + "/" + values["newdir"]
                         os.mkdir(newdir)
                         # Some multithreading here. Reading between each operation to update gui.
-                        newwin.perform_long_operation(lambda: masker(values["imgdir"], values["pb"]), end_key="MASKDONE2")
-                        newwin.read()
-                        newwin.perform_long_operation(lambda: orthorec(
-                                values["imgdir"],
-                                newdir,
-                                values["q"],
-                                values["crop"],
-                                False,
-                                values["ft"],
-                                False,
-                                ),
-                                end_key="ORTHDONE2"
-                        )
-                        newwin.read()
-                        value = float(calculate_gsd(newdir + "/report.pdf"))
-                        newwin.perform_long_operation(
-                                    lambda: 
-                                        seg(
-                                            newdir + "/odm_orthophoto.tif",
-                                            newdir,
-                                            value,
-                                            values["spec"],
-                                        ),
-                                        end_key="SEGDONE2"
-                                    )
-                        newwin.read()
+                        threading.Thread(target=all_function_thread, args=(newwin, values["imgdir"], values["pb"], values["newdir"], values["q"], values["crop"], False, values["ft"], False, newdir + "/odm_orthophoto.tif", newdir, values["spec"],), daemon=True).start()
+                        loading = True
 
                     except:
                         # Cleaning up masks in the event of an error
+                        loading = False
                         clean_masks(values["imgdir"])
                         sg.popup("ERROR 3: Problem processing request.")
-
+        else:
+            continue
+        
+    
     newwin.close()
