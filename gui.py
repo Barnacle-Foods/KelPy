@@ -37,7 +37,7 @@ This function creates the information necessary to make a window.
 
 
 def window():
-    sg.theme("Default")
+    sg.theme("Dark2")
     layout = [
         # Initial Folders
         [
@@ -132,7 +132,7 @@ def mainwin():
 
         #sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
         if loading == True:
-            sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
+            sg.popup_animated(image_source="Wheel.gif")
         else:
             sg.popup_animated(image_source=None)
         if event == sg.WIN_CLOSED:
