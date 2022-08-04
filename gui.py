@@ -1,7 +1,15 @@
 # Kelpy gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 8/3/2022 - Chet Russell
+# Last edited: 8/4/2022 - Chet Russell
+
+"""
+NOTICE: I am aware that a LOT of the code in the mainwin function is spaghetti
+code. In the sake of programming time, I had to do what I had to do. Even
+though it is spaghetti code, it shouldn't affect runtime, as the nested loops
+are just checking user input, the processing steps are inside the final loop.
+This will be fixed at a later date, but for now, it works.
+"""
 
 import os
 import threading
@@ -12,6 +20,11 @@ from core import seg
 from core import calculate_gsd
 from core import clean_masks
 
+""" --------------ORTHO FUNCTION THREAD FUNCTION---------------------------
+This function allows the masking and orthorectification step to take place 
+in one thread, allowing the loading wheel to spin.
+------------------------------------------------------------------------ """
+
 
 def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
     window.write_event_value("-THREAD START-", "")
@@ -20,10 +33,22 @@ def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
     window.write_event_value("-THREAD DONE-", "")
 
 
+""" --------------SEG FUNCTION THREAD FUNCTION---------------------------
+This function allows the segmentation(kelpomatic) step to take place in 
+one thread, allowing the loading wheel to spin.
+------------------------------------------------------------------------ """
+
+
 def seg_function_thread(window, ortho, komp, gsd, spec):
     window.write_event_value("-THREAD START-", "")
     seg(ortho, komp, gsd, spec)
     window.write_event_value("-THREAD DONE-", "")
+
+
+""" --------------ALL FUNCTION THREAD FUNCTION---------------------------
+This function allows all steps to take place simultaneously in one thread, 
+allowing the loading wheel to spin.
+------------------------------------------------------------------------ """
 
 
 def all_function_thread(
