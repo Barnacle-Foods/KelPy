@@ -1,4 +1,4 @@
-# Kelpy
+# KelPy
 ### Streamlining orthorectification and kelp identification
 
 ---

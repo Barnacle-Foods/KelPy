@@ -9,9 +9,9 @@ import PyPDF2
 import hakai_segmentation
 import rasterio
 import zipfile
-from PIL import Image
-from glint_mask_tools import RGBThresholdMasker
-from pyodm import Node, exceptions
+import glint_mask_tools
+import PIL
+import pyodm
 
 """ ------------------------ MASKER FUNCTION ---------------------------
 This function takes an image directory and a pixel buffer and runs the
@@ -24,7 +24,9 @@ glint-mask-tools python package.
 
 def masker(imgdir: str, pb: int):
     # This is the function that creates the image mask using glint-mask-tools.
-    masker = RGBThresholdMasker(img_dir=imgdir, mask_dir=imgdir, pixel_buffer=pb)
+    masker = glint_mask_tools.RGBThresholdMasker(
+        img_dir=imgdir, mask_dir=imgdir, pixel_buffer=pb
+    )
     masker.__call__(max_workers=0, callback=print, err_callback=print)
 
     # This turns the mask files from .png to .jpg
@@ -74,7 +76,7 @@ def orthorec(
         tmp = imgdir + "/" + filenames
         imglist.append(tmp)
 
-    n = Node("localhost", 3000)
+    n = pyodm.Node("localhost", 3000)
 
     try:
         # Start a task
@@ -126,11 +128,11 @@ def orthorec(
 
             compress_tif(dwndir + "/odm_orthophoto.tif", dwndir + "/viewableOrtho.jpg")
 
-        except exceptions.TaskFailedError as e:
+        except pyodm.exceptions.TaskFailedError as e:
             print("\n".join(task.output()))
-    except exceptions.NodeConnectionError as e:
+    except pyodm.exceptions.NodeConnectionError as e:
         print("Cannot connect: %s" % e)
-    except exceptions.NodeResponseError as e:
+    except pyodm.exceptions.NodeResponseError as e:
         print("Error: %s" % e)
 
 
@@ -150,7 +152,7 @@ color designating the lack of kelp. It then spits out area calculations.
 
 
 def seg(ortho: str, komp: str, gsd: float, spec: bool):
-    Image.MAX_IMAGE_PIXELS = 9999999999
+    PIL.Image.MAX_IMAGE_PIXELS = 9999999999
     kelp = 0
     no_kelp = 0
     bull = 0
@@ -201,7 +203,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 )
 
     # Calculating the kelp pixels
-    with Image.open(komp + ext1) as im:
+    with PIL.Image.open(komp + ext1) as im:
 
         # If species differentiation is turned off
         if spec == False or spec == "0":
@@ -363,6 +365,6 @@ This function takes a .tif file and compresses it, turning it into a viewable JP
 
 
 def compress_tif(imgname: str, savename: str):
-    img = Image.open(imgname)
+    img = PIL.Image.open(imgname)
     rgb_im = img.convert("RGB")
     rgb_im.save(savename, optimize=True, quality=65)
