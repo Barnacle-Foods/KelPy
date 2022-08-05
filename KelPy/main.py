@@ -3,6 +3,6 @@
 # Author: Chet Russell
 # Last edited: 8/3/2022 - Chet Russell
 
-from gui import mainwin
+import gui
 
-mainwin()
+gui.mainwin()

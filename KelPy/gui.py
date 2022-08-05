@@ -11,14 +11,23 @@ are just checking user input, the processing steps are inside the final loop.
 This will be fixed at a later date, but for now, it works.
 """
 
+import core
 import os
+import sys
 import threading
 import PySimpleGUI as sg
-from core import masker
-from core import orthorec
-from core import seg
-from core import calculate_gsd
-from core import clean_masks
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
 
 """ --------------ORTHO FUNCTION THREAD FUNCTION---------------------------
 This function allows the masking and orthorectification step to take place 
@@ -28,8 +37,8 @@ in one thread, allowing the loading wheel to spin.
 
 def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
     window.write_event_value("-THREAD START-", "")
-    masker(imgdir, pb)
-    orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
+    core.masker(imgdir, pb)
+    core.orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
     window.write_event_value("-THREAD DONE-", "")
 
 
@@ -41,7 +50,7 @@ one thread, allowing the loading wheel to spin.
 
 def seg_function_thread(window, ortho, komp, gsd, spec):
     window.write_event_value("-THREAD START-", "")
-    seg(ortho, komp, gsd, spec)
+    core.seg(ortho, komp, gsd, spec)
     window.write_event_value("-THREAD DONE-", "")
 
 
@@ -55,10 +64,10 @@ def all_function_thread(
     window, imgdir, pb, newdir, q, crop, kmz, ft, exif, ortho, komp, spec
 ):
     window.write_event_value("-THREAD START-", "")
-    masker(imgdir, pb)
-    orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
-    value = float(calculate_gsd(newdir + "/report.pdf"))
-    seg(ortho, komp, value, spec)
+    core.masker(imgdir, pb)
+    core.orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
+    value = float(core.calculate_gsd(newdir + "/report.pdf"))
+    core.seg(ortho, komp, value, spec)
     window.write_event_value("-THREAD DONE-", "")
 
 
@@ -147,7 +156,7 @@ def window():
     ]
 
     return sg.Window(
-        "KelPy", layout, finalize=True, icon="graphics/bull.ico"
+        "KelPy", layout, finalize=True, icon=resource_path("graphics/bull.ico")
     )  # size=(700, 700))
 
 
@@ -163,10 +172,9 @@ def mainwin():
     while True:  # Event Loop
         event, values = newwin.read(timeout=100)
 
-        # sg.popup_animated("C:/Users/matt/Documents/imagery_project/UUjhE.gif")
         if loading == True:
             sg.popup_animated(
-                image_source="graphics/Wheel.gif",
+                image_source=resource_path("graphics/Wheel.gif"),
                 grab_anywhere=False,
                 keep_on_top=False,
                 message="Processing...",
@@ -215,7 +223,7 @@ def mainwin():
                         except:
                             # Cleaning up masks in the event of an error
                             loading = False
-                            clean_masks(values["imgdir"])
+                            core.clean_masks(values["imgdir"])
                             sg.popup("ERROR 1: Problem processing request.")
 
         # Running Kelpomatic
@@ -289,7 +297,7 @@ def mainwin():
                     except:
                         # Cleaning up masks in the event of an error
                         loading = False
-                        clean_masks(values["imgdir"])
+                        core.clean_masks(values["imgdir"])
                         sg.popup("ERROR 3: Problem processing request.")
         else:
             continue
