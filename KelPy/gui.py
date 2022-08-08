@@ -148,8 +148,8 @@ def window():
             sg.Text("Only required when running independently.", font=("Helvetica", 8)),
         ],
         [
-            sg.Text("Species classification (default value false):"),
-            sg.Combo([True, False], default_value=False, key="spec"),
+            sg.Text("Species classification:"),
+            sg.Combo([True, False], key="spec"),
         ],
         [sg.Button("Run Identification Independently")],
         [sg.Button("Run All", font=("Helvetica", 20))],
@@ -237,29 +237,32 @@ def mainwin():
                     if values["gsd"] == "":
                         sg.popup("ERROR: GSD value empty.", title="ERROR")
                     else:
-                        value = float(values["gsd"])
-                        if isinstance(value, float):
-                            try:
-                                threading.Thread(
-                                    target=seg_function_thread,
-                                    args=(
-                                        newwin,
-                                        values["orthfile"],
-                                        values["resdir"],
-                                        value,
-                                        values["spec"],
-                                    ),
-                                    daemon=True,
-                                ).start()
-                                loading = True
-
-                            except:
-                                loading = False
-                                # Cleaning up masks in the event of an error
-                                sg.popup("ERROR 2: Problem processing request.")
+                        if values["spec"] == "":
+                            sg.popup("ERROR: Species value empty.", title="ERROR")
                         else:
+                            value = float(values["gsd"])
+                            if isinstance(value, float):
+                                try:
+                                    threading.Thread(
+                                        target=seg_function_thread,
+                                        args=(
+                                            newwin,
+                                            values["orthfile"],
+                                            values["resdir"],
+                                            value,
+                                            values["spec"],
+                                        ),
+                                        daemon=True,
+                                    ).start()
+                                    loading = True
 
-                            sg.popup("ERROR: GSD not an integer value.")
+                                except:
+                                    loading = False
+                                    # Cleaning up masks in the event of an error
+                                    sg.popup("ERROR 2: Problem processing request.")
+                            else:
+
+                                sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
         elif event == "Run All":
@@ -269,36 +272,39 @@ def mainwin():
                 if values["dwndir"] == "":
                     sg.popup("ERROR: No results folder selected.", title="ERROR")
                 else:
-                    try:
-                        # This is the folder that is being created
-                        newdir = values["dwndir"] + "/" + values["newdir"]
-                        os.mkdir(newdir)
-                        # Some multithreading here. Reading between each operation to update gui.
-                        threading.Thread(
-                            target=all_function_thread,
-                            args=(
-                                newwin,
-                                values["imgdir"],
-                                values["pb"],
-                                newdir,
-                                values["q"],
-                                values["crop"],
-                                False,
-                                values["ft"],
-                                False,
-                                newdir + "/odm_orthophoto.tif",
-                                newdir,
-                                values["spec"],
-                            ),
-                            daemon=True,
-                        ).start()
-                        loading = True
+                    if values["spec"] == "":
+                            sg.popup("ERROR: Species value empty.", title="ERROR")
+                    else:
+                        try:
+                            # This is the folder that is being created
+                            newdir = values["dwndir"] + "/" + values["newdir"]
+                            os.mkdir(newdir)
+                            # Some multithreading here. Reading between each operation to update gui.
+                            threading.Thread(
+                                target=all_function_thread,
+                                args=(
+                                    newwin,
+                                    values["imgdir"],
+                                    values["pb"],
+                                    newdir,
+                                    values["q"],
+                                    values["crop"],
+                                    False,
+                                    values["ft"],
+                                    False,
+                                    newdir + "/odm_orthophoto.tif",
+                                    newdir,
+                                    values["spec"],
+                                ),
+                                daemon=True,
+                            ).start()
+                            loading = True
 
-                    except:
-                        # Cleaning up masks in the event of an error
-                        loading = False
-                        core.clean_masks(values["imgdir"])
-                        sg.popup("ERROR 3: Problem processing request.")
+                        except:
+                            # Cleaning up masks in the event of an error
+                            loading = False
+                            core.clean_masks(values["imgdir"])
+                            sg.popup("ERROR 3: Problem processing request.")
         else:
             continue
 
