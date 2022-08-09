@@ -1,7 +1,7 @@
 # Kelpy gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 8/4/2022 - Chet Russell
+# Last edited: 8/8/2022 - Chet Russell
 
 """
 NOTICE: I am aware that a LOT of the code in the mainwin function is spaghetti
