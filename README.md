@@ -20,6 +20,8 @@
   
   After this, you are ready to go!
   
+  If you need, there is a more comprehensive installation guide, named KelPy User Manual 1.pdf
+  
 
 ### Flags and variables
 
