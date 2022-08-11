@@ -3,7 +3,7 @@
 <a href="https://img.shields.io/github/last-commit/Barnacle-Foods/barnacle-imagery"><img alt="Last Commit" src="https://img.shields.io/github/last-commit/Barnacle-Foods/barnacle-imagery"></a>
 <a href="https://img.shields.io/github/languages/top/Barnacle-Foods/barnacle-imagery"><img alt="Action Status" src="https://img.shields.io/github/languages/top/Barnacle-Foods/barnacle-imagery"></a>
 <a href="https://img.shields.io/github/issues/Barnacle-Foods/barnacle-imagery"><img alt="Issues" src="https://img.shields.io/github/issues/Barnacle-Foods/barnacle-imagery"></a>
-<a href="https://img.shields.io/github/languages/top/Barnacle-Foods/barnacle-imagery"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/Barnacle-Foods/barnacle-imagery">
+<a href="https://img.shields.io/github/v/release/Barnacle-Foods/barnacle-imagery"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/Barnacle-Foods/barnacle-imagery">
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 <a href="https://img.shields.io/github/license/Barnacle-Foods/barnacle-imagery"><img alt="License" src="https://img.shields.io/github/license/Barnacle-Foods/barnacle-imagery"></a>
 </p>
