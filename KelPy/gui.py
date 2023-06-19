@@ -19,7 +19,7 @@ import PySimpleGUI as sg
 
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
+    """Get absolute path to resource, works for dev and for PyInstaller"""
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
@@ -261,7 +261,6 @@ def mainwin():
                                     # Cleaning up masks in the event of an error
                                     sg.popup("ERROR 2: Problem processing request.")
                             else:
-
                                 sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
@@ -273,7 +272,7 @@ def mainwin():
                     sg.popup("ERROR: No results folder selected.", title="ERROR")
                 else:
                     if values["spec"] == "":
-                            sg.popup("ERROR: Species value empty.", title="ERROR")
+                        sg.popup("ERROR: Species value empty.", title="ERROR")
                     else:
                         try:
                             # This is the folder that is being created

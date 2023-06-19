@@ -10,7 +10,7 @@ import hakai_segmentation
 import rasterio
 import zipfile
 import glint_mask_generator
-import PIL
+from PIL import Image
 import pyodm
 
 """ ------------------------ MASKER FUNCTION ---------------------------
@@ -128,11 +128,11 @@ def orthorec(
 
             compress_tif(dwndir + "/odm_orthophoto.tif", dwndir + "/viewableOrtho.jpg")
 
-        except pyodm.exceptions.TaskFailedError as e:
+        except pyodm.exceptions.TaskFailedError as e:  # type: ignore
             print("\n".join(task.output()))
-    except pyodm.exceptions.NodeConnectionError as e:
+    except pyodm.exceptions.NodeConnectionError as e:  # type: ignore
         print("Cannot connect: %s" % e)
-    except pyodm.exceptions.NodeResponseError as e:
+    except pyodm.exceptions.NodeResponseError as e:  # type: ignore
         print("Error: %s" % e)
 
 
@@ -152,7 +152,7 @@ color designating the lack of kelp. It then spits out area calculations.
 
 
 def seg(ortho: str, komp: str, gsd: float, spec: bool):
-    PIL.Image.MAX_IMAGE_PIXELS = 9999999999
+    Image.MAX_IMAGE_PIXELS = 9999999999
     kelp = 0
     no_kelp = 0
     bull = 0
@@ -174,7 +174,6 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
 
     # Writing the colormap
     with rasterio.Env():
-
         with rasterio.open(kom) as src:
             shade = src.read(1)
             meta = src.meta
@@ -203,8 +202,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 )
 
     # Calculating the kelp pixels
-    with PIL.Image.open(komp + ext1) as im:
-
+    with Image.open(komp + ext1) as im:
         # If species differentiation is turned off
         if spec == False or spec == "0":
             for pixel in im.getdata():
@@ -347,14 +345,20 @@ def calculate_gsd(pdfdir: str):
     pdf = pageObj.extract_text()
 
     words = pdf.split(" ")
-    if "(GSD)" in words:
-        pos = words.index("(GSD)")
+    # if "(GSD)" in words:
+    #    pos = words.index("(GSD)")
 
-    tmp = words[pos + 1]
+    try:
+        pos = words.index("(GSD)")
+        res = words[pos + 1]
+
+    except:
+        print("Cannot find ground sampling distance.")
+
     # closing the pdf file object
     pdfFileObj.close()
 
-    return tmp
+    return res
 
 
 """ ------------------------- COMPRESS_TIF FUNCTION -----------------------
@@ -365,6 +369,6 @@ This function takes a .tif file and compresses it, turning it into a viewable JP
 
 
 def compress_tif(imgname: str, savename: str):
-    img = PIL.Image.open(imgname)
+    img = Image.open(imgname)
     rgb_im = img.convert("RGB")
     rgb_im.save(savename, optimize=True, quality=65)
