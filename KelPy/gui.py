@@ -1,7 +1,7 @@
 # Kelpy gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 8/8/2022 - Chet Russell
+# Last edited: 6/19/2023 - Chet Russell
 
 """
 NOTICE: I am aware that a LOT of the code in the mainwin function is spaghetti
@@ -19,10 +19,10 @@ import PySimpleGUI as sg
 
 
 def resource_path(relative_path):
-    """Get absolute path to resource, works for dev and for PyInstaller"""
+    """ Get absolute path to resource, works for dev and for PyInstaller """
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
+        base_path = sys._MEIPASS # type: ignore
     except Exception:
         base_path = os.path.abspath(".")
 
@@ -170,7 +170,7 @@ def mainwin():
     newwin = window()
     loading = False
     while True:  # Event Loop
-        event, values = newwin.read(timeout=100)
+        event, values = newwin.read(timeout=100) # type: ignore
 
         if loading == True:
             sg.popup_animated(
@@ -261,6 +261,7 @@ def mainwin():
                                     # Cleaning up masks in the event of an error
                                     sg.popup("ERROR 2: Problem processing request.")
                             else:
+
                                 sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
@@ -272,7 +273,7 @@ def mainwin():
                     sg.popup("ERROR: No results folder selected.", title="ERROR")
                 else:
                     if values["spec"] == "":
-                        sg.popup("ERROR: Species value empty.", title="ERROR")
+                            sg.popup("ERROR: Species value empty.", title="ERROR")
                     else:
                         try:
                             # This is the folder that is being created
