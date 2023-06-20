@@ -1,7 +1,7 @@
 # Kelpy gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 6/19/2023 - Chet Russell
+# Last edited: 6/20/2023 - Chet Russell
 
 """
 NOTICE: I am aware that a LOT of the code in the mainwin function is spaghetti
@@ -172,6 +172,7 @@ def mainwin():
     while True:  # Event Loop
         event, values = newwin.read(timeout=100) # type: ignore
 
+        # Actual loading window
         if loading == True:
             sg.popup_animated(
                 image_source=resource_path("graphics/Wheel.gif"),
