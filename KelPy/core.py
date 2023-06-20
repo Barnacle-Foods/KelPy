@@ -1,12 +1,12 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 6/19/2023 - Chet Russell
+# Last edited: 6/20/2023 - Chet Russell
 
 import os
 import shutil
 import PyPDF2
-import hakai_segmentation
+import kelp_o_matic
 import rasterio
 import zipfile
 import glint_mask_generator
@@ -170,7 +170,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
         ext2 = "/species_kelp_area.txt"
 
     # Calling the kelpomatic tool
-    hakai_segmentation.find_kelp(ortho, kom, species=spec, use_gpu=True)
+    kelp_o_matic.find_kelp(ortho, kom, species=spec, use_gpu=True)
 
     # Writing the colormap
     with rasterio.Env():
