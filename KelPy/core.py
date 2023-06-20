@@ -9,7 +9,7 @@ import PyPDF2
 import kelp_o_matic
 import rasterio
 import zipfile
-import glint_mask_generator
+import glint_mask_tools
 from PIL import Image
 import pyodm
 
@@ -24,7 +24,7 @@ glint-mask-tools python package.
 
 def masker(imgdir: str, pb: int):
     # This is the function that creates the image mask using glint-mask-tools.
-    masker = glint_mask_generator.RGBThresholdMasker(
+    masker = glint_mask_tools.RGBThresholdMasker(
         img_dir=imgdir, mask_dir=imgdir, pixel_buffer=pb
     )
     masker.__call__(max_workers=0, callback=print, err_callback=print)

@@ -1,4 +1,5 @@
 env/
+output/
 .vsode
 .vs/
 # Byte-compiled / optimized / DLL files
