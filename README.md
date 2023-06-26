@@ -42,7 +42,7 @@ You must have [OpenDroneMap](https://github.com/OpenDroneMap/ODM) installed loca
 
 
 
-## Acknowledgment
+## Acknowledgement
 
   This application uses code from the following repositories:
 
