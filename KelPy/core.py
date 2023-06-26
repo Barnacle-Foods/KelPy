@@ -85,18 +85,23 @@ def orthorec(
         tmp = imgdir + "/" + filenames
         imglist.append(tmp)
 
+    # Using a temporary directory to store all files associated with OpenDroneMap
     with tempfile.TemporaryDirectory() as tmpdirname:
         print("created temporary directory", tmpdirname)
 
+        # Weird OpenDroneMap things...
         tmpimgs = tmpdirname + "\\code\\images"
         os.mkdir(tmpdirname + "\\code")
         os.mkdir(tmpimgs)
 
+        # Copying all images from image folder to new tmp directory
         for jpgfile in glob.iglob(os.path.join(imgdir, "*.jpg")):
             shutil.copy(jpgfile, tmpimgs)
 
+        # Creating glint masks
         masker(tmpimgs, pb)
 
+        # Creating a dictionary to store the .yaml information
         data = {
             "project_path": tmpdirname,
             "orthophoto_cutline": False,
@@ -124,6 +129,7 @@ def orthorec(
 
         print(yaml_output)
 
+        # yaml file to run OpenDroneMap
         def write_yaml_to_file(py_obj, filename):
             with open(
                 f"{filename}.yaml",
@@ -134,12 +140,13 @@ def orthorec(
 
         write_yaml_to_file(data, gui.resource_path("ODM\\settings"))
 
+        # Running OpenDroneMap on windows natively (without Docker!!!)
         os.system(gui.resource_path("ODM\\run.bat"))
 
-        clean_masks(tmpimgs)
-
+        # Grab the pdf and tif file and send them to the download folder
         extract_essentials(tmpdirname, dwndir)
 
+        # Creating a viewable jpg so you can see what the tif looks like. This is really only necessary when you are dealing with gigantic tif files.
         compress_tif(dwndir + "/odm_orthophoto.tif", dwndir + "/viewableOrtho.jpg")
 
 
@@ -278,22 +285,6 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 + ", giant kelp pixels="
                 + str(giant)
             )
-
-
-""" ---------------------------- CLEAN_MASK FUNCTION -----------------------
-This function takes an image directory and deletes all mask files located
-within.
-:param imgdir: The directory where the images are stored.
------------------------------------------------------------------------- """
-
-
-def clean_masks(imgdir: str):
-    for filename in os.listdir(imgdir):
-        infilename = os.path.join(imgdir, filename)
-        if not os.path.isfile(infilename):
-            continue
-        if infilename.endswith("_mask.JPG"):
-            os.remove(infilename)
 
 
 """ --------------------- EXTRACT_ESSENTIALS FUNCTION ----------------------
