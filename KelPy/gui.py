@@ -321,7 +321,6 @@ def mainwin():
                         except:
                             # Cleaning up masks in the event of an error
                             loading = False
-                            core.clean_masks(values["imgdir"])
                             sg.popup(
                                 "ERROR 3: There already exists a folder of that name."
                             )

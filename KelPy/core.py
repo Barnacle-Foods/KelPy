@@ -68,8 +68,6 @@ docker container. https://docs.opendronemap.org/
 
 :param pb: The value the glint-mask-tools package takes when calculating
            pixels affected.
-
-
 ------------------------------------------------------------------------ """
 
 
