@@ -12,21 +12,7 @@
 
 ## Installation
 
-  Before installing, you must have a [NodeODM](https://github.com/OpenDroneMap/NodeODM) node running locally via:
-
-```sh
-  $ docker run -ti -p 3000:3000 opendronemap/nodeodm
-```
-
-  Or you can use GPU acceleration with the command:
-  
-```sh
-  $ docker run -p 3000:3000 --gpus all opendronemap/nodeodm:gpu
-```
-  
-  After this, you are ready to go!
-  
-#### If you need, there is a more comprehensive installation guide stored in this repository. It is named KelPy User Manual 1.pdf.
+You must have [OpenDroneMap](https://github.com/OpenDroneMap/ODM) installed locally on Windows to run KelPy.
   
 
 ### Flags and variables
