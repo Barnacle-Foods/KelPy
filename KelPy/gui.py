@@ -1,7 +1,7 @@
 # Kelpy gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 6/20/2023 - Chet Russell
+# Last edited: 6/26/2023 - Chet Russell
 
 """
 NOTICE: I am aware that a LOT of the code in the mainwin function is spaghetti
@@ -37,8 +37,8 @@ in one thread, allowing the loading wheel to spin.
 
 def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
     window.write_event_value("-THREAD START-", "")
-    core.masker(imgdir, pb)
-    core.orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
+    #core.masker(imgdir, pb)
+    core.orthorec(imgdir=imgdir, newdir=newdir, quality=q, crop=crop, kmz=kmz, ft=ft, exif=exif, pb=pb)
     window.write_event_value("-THREAD DONE-", "")
 
 
@@ -50,7 +50,7 @@ one thread, allowing the loading wheel to spin.
 
 def seg_function_thread(window, ortho, komp, gsd, spec):
     window.write_event_value("-THREAD START-", "")
-    core.seg(ortho, komp, gsd, spec)
+    core.seg(ortho=ortho, komp=komp, gsd=gsd, spec=spec)
     window.write_event_value("-THREAD DONE-", "")
 
 
@@ -64,10 +64,10 @@ def all_function_thread(
     window, imgdir, pb, newdir, q, crop, kmz, ft, exif, ortho, komp, spec
 ):
     window.write_event_value("-THREAD START-", "")
-    core.masker(imgdir, pb)
-    core.orthorec(imgdir, newdir, q, crop, kmz, ft, exif)
+    #core.masker(imgdir, pb)
+    core.orthorec(imgdir=imgdir, dwndir=newdir, quality=q, crop=crop, kmz=kmz, ft=ft, exif=exif, pb=pb)
     value = float(core.calculate_gsd(newdir + "/report.pdf"))
-    core.seg(ortho, komp, value, spec)
+    core.seg(ortho=ortho, komp=komp, gsd=value, spec=spec)
     window.write_event_value("-THREAD DONE-", "")
 
 
