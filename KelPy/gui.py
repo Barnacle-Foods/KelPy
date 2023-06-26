@@ -19,10 +19,10 @@ import PySimpleGUI as sg
 
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
+    """Get absolute path to resource, works for dev and for PyInstaller"""
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS # type: ignore
+        base_path = sys._MEIPASS  # type: ignore
     except Exception:
         base_path = os.path.abspath(".")
 
@@ -37,8 +37,17 @@ in one thread, allowing the loading wheel to spin.
 
 def ortho_function_thread(window, imgdir, pb, newdir, q, crop, kmz, ft, exif):
     window.write_event_value("-THREAD START-", "")
-    #core.masker(imgdir, pb)
-    core.orthorec(imgdir=imgdir, newdir=newdir, quality=q, crop=crop, kmz=kmz, ft=ft, exif=exif, pb=pb)
+    # core.masker(imgdir, pb)
+    core.orthorec(
+        imgdir=imgdir,
+        newdir=newdir,
+        quality=q,
+        crop=crop,
+        kmz=kmz,
+        ft=ft,
+        exif=exif,
+        pb=pb,
+    )
     window.write_event_value("-THREAD DONE-", "")
 
 
@@ -64,8 +73,17 @@ def all_function_thread(
     window, imgdir, pb, newdir, q, crop, kmz, ft, exif, ortho, komp, spec
 ):
     window.write_event_value("-THREAD START-", "")
-    #core.masker(imgdir, pb)
-    core.orthorec(imgdir=imgdir, dwndir=newdir, quality=q, crop=crop, kmz=kmz, ft=ft, exif=exif, pb=pb)
+    # core.masker(imgdir, pb)
+    core.orthorec(
+        imgdir=imgdir,
+        dwndir=newdir,
+        quality=q,
+        crop=crop,
+        kmz=kmz,
+        ft=ft,
+        exif=exif,
+        pb=pb,
+    )
     value = float(core.calculate_gsd(newdir + "/report.pdf"))
     core.seg(ortho=ortho, komp=komp, gsd=value, spec=spec)
     window.write_event_value("-THREAD DONE-", "")
@@ -170,7 +188,7 @@ def mainwin():
     newwin = window()
     loading = False
     while True:  # Event Loop
-        event, values = newwin.read(timeout=100) # type: ignore
+        event, values = newwin.read(timeout=100)  # type: ignore
 
         # Actual loading window
         if loading == True:
@@ -262,7 +280,6 @@ def mainwin():
                                     # Cleaning up masks in the event of an error
                                     sg.popup("ERROR 2: Problem processing request.")
                             else:
-
                                 sg.popup("ERROR: GSD not an integer value.")
 
         # Running both orthorectification and kelpomatic together
@@ -274,7 +291,7 @@ def mainwin():
                     sg.popup("ERROR: No results folder selected.", title="ERROR")
                 else:
                     if values["spec"] == "":
-                            sg.popup("ERROR: Species value empty.", title="ERROR")
+                        sg.popup("ERROR: Species value empty.", title="ERROR")
                     else:
                         try:
                             # This is the folder that is being created
@@ -305,7 +322,9 @@ def mainwin():
                             # Cleaning up masks in the event of an error
                             loading = False
                             core.clean_masks(values["imgdir"])
-                            sg.popup("ERROR 3: There already exists a folder of that name.")
+                            sg.popup(
+                                "ERROR 3: There already exists a folder of that name."
+                            )
         else:
             continue
 

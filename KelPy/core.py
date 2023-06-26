@@ -69,7 +69,14 @@ docker container. https://docs.opendronemap.org/
 
 
 def orthorec(
-    imgdir: str, dwndir: str, quality: str, crop: int, kmz: bool, ft: str, exif: bool, pb: int
+    imgdir: str,
+    dwndir: str,
+    quality: str,
+    crop: int,
+    kmz: bool,
+    ft: str,
+    exif: bool,
+    pb: int,
 ):
     imglist = []
 
@@ -79,8 +86,8 @@ def orthorec(
         imglist.append(tmp)
 
     with tempfile.TemporaryDirectory() as tmpdirname:
-        print('created temporary directory', tmpdirname)
-        
+        print("created temporary directory", tmpdirname)
+
         tmpimgs = tmpdirname + "\\code\\images"
         os.mkdir(tmpdirname + "\\code")
         os.mkdir(tmpimgs)
@@ -111,85 +118,29 @@ def orthorec(
             "ignore_gsd": False,
             "fast_orthophoto": True,
             "feature_type": ft,
-            } 
+        }
 
-        yaml_output = yaml.dump(data, sort_keys=False) 
+        yaml_output = yaml.dump(data, sort_keys=False)
 
-        print(yaml_output) 
+        print(yaml_output)
 
         def write_yaml_to_file(py_obj, filename):
-            with open(f'{filename}.yaml', 'w',) as f:
-                yaml.dump(py_obj,f,sort_keys=False) 
-            print('Written to file successfully')
+            with open(
+                f"{filename}.yaml",
+                "w",
+            ) as f:
+                yaml.dump(py_obj, f, sort_keys=False)
+            print("Written to file successfully")
 
-        write_yaml_to_file(data, gui.resource_path('ODM\\settings'))
+        write_yaml_to_file(data, gui.resource_path("ODM\\settings"))
 
-        os.system(gui.resource_path('ODM\\run.bat'))
+        os.system(gui.resource_path("ODM\\run.bat"))
 
         clean_masks(tmpimgs)
 
         extract_essentials(tmpdirname, dwndir)
 
         compress_tif(dwndir + "/odm_orthophoto.tif", dwndir + "/viewableOrtho.jpg")
-
-    #n = pyodm.Node("localhost", 3000)
-
-    #try:
-    #    # Start a task
-    #    print("Uploading images...")
-    #    task = n.create_task(
-    #        imglist,
-    #        skip_post_processing=True,
-    #        options={
-    #            "orthophoto-cutline": False,
-    #            "min-num-features": 20000,
-    #            "pc-quality": quality,
-    #            "texturing-data-term": "gmi",
-    #            "verbose": True,
-    #            "debug": True,
-    #            "time": True,
-    #            "crop": crop,
-    #            "auto-boundary": False,
-    #            "skip-3dmodel": True,
-    #            "cog": False,
-    #            "use-3dmesh": False,
-    #            "pc-tile": True,
-    #            "orthophoto-kmz": kmz,
-    #            "use-exif": exif,
-    #            "orthophoto-resolution": 1,
-    #            "no-gpu": False,
-    #            "ignore-gsd": False,
-    #            "fast-orthophoto": True,
-    #            "feature-type": ft,
-    #        },
-    #    )
-    #    print(task.info())
-
-        #try:
-            # This will block until the task is finished
-            # or will raise an exception
-            #task.wait_for_completion()
-
-            #print("Task completed, downloading results...")
-
-            # Retrieve results
-            #zipdir = task.download_zip(dwndir)
-            #with zipfile.ZipFile(zipdir, "r") as zip_ref:
-            #    zip_ref.extractall(dwndir)
-
-            # Removes mask files from the image folder.
-            #clean_masks(imgdir)
-
-            #extract_essentials(dwndir, True)
-
-            #compress_tif(dwndir + "/odm_orthophoto.tif", dwndir + "/viewableOrtho.jpg")
-
-#        except pyodm.exceptions.TaskFailedError as e:  # type: ignore
-#            print("\n".join(task.output()))
-#    except pyodm.exceptions.NodeConnectionError as e:  # type: ignore
-#        print("Cannot connect: %s" % e)
-#    except pyodm.exceptions.NodeResponseError as e:  # type: ignore
-#        print("Error: %s" % e)
 
 
 """ ---------------------- SEGMENTATION FUNCTION --------------------------- 
@@ -357,34 +308,6 @@ report, the orthomosaic, the kmz file, the colormap and the kelp area report.
 def extract_essentials(dir: str, dest: str):
     shutil.copy(dir + "\\code\\odm_report\\report.pdf", dest)
     shutil.copy(dir + "\\code\\odm_orthophoto\\odm_orthophoto.tif", dest)
-
-
-    #if ext == True:
-    #    os.replace(dir + "\\odm_report\\report.pdf", dir + "\\report.pdf")
-    #    os.replace(
-    #        dir + "\\odm_orthophoto\\odm_orthophoto.tif", dir + "\\odm_orthophoto.tif"
-    #    )
-
-    #for filename in os.listdir(dir):
-    #    infilename = os.path.join(dir, filename)
-    #    if (
-    #        infilename.endswith("report.pdf")
-    #        or infilename.endswith("odm_orthophoto.tif")
-    #        or infilename.endswith("colormap.tif")
-    #        or infilename.endswith("species_colormap.tif")
-    #        or infilename.endswith(".KML")
-    #        or infilename.endswith("kelp_area.txt")
-    #        or infilename.endswith("species_kelp_area.txt")
-    #    ):
-    #        continue
-    #    elif infilename.endswith(".zip"):
-    #        os.remove(infilename)
-    #    elif infilename.endswith(".json"):
-    #        os.remove(infilename)
-    #    elif os.path.isdir(infilename):
-    #        shutil.rmtree(infilename)
-    #    else:
-    #        os.remove(infilename)
 
 
 """ ------------------------- CALCULATE_GSD FUNCTION -----------------------
