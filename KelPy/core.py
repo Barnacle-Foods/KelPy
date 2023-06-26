@@ -65,6 +65,11 @@ docker container. https://docs.opendronemap.org/
 
 :param exif: ODM option to use EXIF information on images. More info:
              https://docs.opendronemap.org/arguments/use-exif/
+
+:param pb: The value the glint-mask-tools package takes when calculating
+           pixels affected.
+
+
 ------------------------------------------------------------------------ """
 
 
@@ -288,11 +293,9 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
 
 
 """ --------------------- EXTRACT_ESSENTIALS FUNCTION ----------------------
-This function takes a directory and deletes all files except for the ODM
-report, the orthomosaic, the kmz file, the colormap and the kelp area report.
+This function takes a directory and grabs the ODM report and orthomosaic.
 :param dir: The directory where the files are stored.
-:param ext: Boolean value to determine if the report and orthophoto should be
-            grabbed.
+:param dest: The directory where the files are placed.
 ------------------------------------------------------------------------ """
 
 
