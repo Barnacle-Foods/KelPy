@@ -29,7 +29,7 @@ You must have [OpenDroneMap](https://github.com/OpenDroneMap/ODM) installed loca
 
   Feature-type algorithm - [ODM option](https://docs.opendronemap.org/arguments/feature-type/) to determine feature types. Default is sift.
 
-  Species classification - [Hakai-segmentation](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation) option to determine whether or not to differentiate between bullkelp and giantkelp.
+  Species classification - [Kelp-o-matic](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation) option to determine whether or not to differentiate between bullkelp and giantkelp.
 
 
 ### Flags for independent identification
