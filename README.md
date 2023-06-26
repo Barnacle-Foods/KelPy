@@ -48,6 +48,6 @@ You must have [OpenDroneMap](https://github.com/OpenDroneMap/ODM) installed loca
 
   https://github.com/HakaiInstitute/GlintMaskGenerator
 
-  https://github.com/HakaiInstitute/hakai-segmentation
+  https://github.com/HakaiInstitute/kelp-o-matic
 
   https://github.com/OpenDroneMap/NodeODM
