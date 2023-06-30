@@ -19,13 +19,14 @@ import earthpy.spatial as es
 import earthpy.plot as ep
 
 # Path to your orthomosaic.tif
-data_path = ""
+data_path = "C:\\Users\\matt\\Documents\\GitHub\\New-ortho\\tlt\\code\\odm_orthophoto\\odm_orthophoto.tif"
 data = rxr.open_rasterio(data_path)
 
 # View shape of the data
 print(data.shape)
 print(data[1])
 
+# Values chosen for NDVI (Red and NIR)
 ndvi = es.normalized_diff(data[3], data[2])
 
 ep.plot_bands(
@@ -34,7 +35,7 @@ ep.plot_bands(
     scale=False,
     vmin=-1,
     vmax=1,
-    title="NDVI (Normalized Distribution Vegetation Index)",
+    title="NDVI (Normalized Difference Vegetation Index)",
 )
 plt.show()
 
@@ -71,7 +72,7 @@ im = ax.imshow(ndvi_class, cmap=nbr_cmap)
 
 ep.draw_legend(im_ax=im, classes=classes, titles=ndvi_cat_names)
 ax.set_title(
-    "Landsat 8 - Normalized Difference Vegetation Index (NDVI) Classes",
+    "Normalized Difference Vegetation Index (NDVI) Classes",
     fontsize=14,
 )
 ax.set_axis_off()
