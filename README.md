@@ -21,13 +21,13 @@ You must have [OpenDroneMap](https://github.com/OpenDroneMap/ODM) installed loca
 
   Results Folder - Directory where you want to store the results.
 
-  Pixel Buffer - [A glint-mask-generator flag](https://github.com/HakaiInstitute/GlintMaskGenerator). Default is 5. 
+  Pixel Buffer - [A glint-mask-generator flag](https://github.com/HakaiInstitute/GlintMaskGenerator). Default is 5. Higher values take more processing time. 
   
-  Quality - [ODM option](https://docs.opendronemap.org/arguments/pc-quality/) to determine quality of the orthomosaic generated. Default is high.
+  Quality - [ODM option](https://docs.opendronemap.org/arguments/pc-quality/) to determine quality of the orthomosaic generated. Default is high. Higher values take more processing power.
 
   Crop -  [ODM option](https://docs.opendronemap.org/arguments/crop/) to crop dataset boundaries. Default is 0.
 
-  Feature-type algorithm - [ODM option](https://docs.opendronemap.org/arguments/feature-type/) to determine feature types. Default is sift.
+  Feature-type algorithm - [ODM option](https://docs.opendronemap.org/arguments/feature-type/) to determine feature types. Default is sift. 
 
   Species classification - [Kelp-o-matic](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation) option to determine whether or not to differentiate between bullkelp and giantkelp.
 
