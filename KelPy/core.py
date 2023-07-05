@@ -254,7 +254,8 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
         # If species differentiation is turned off
         if spec == False or spec == "0":
             f.write("kelp area cm^2: " + str(kcm))
-            f.write("\nkelp area m^2: " + str(kcm * 0.01))
+            # This should be .0001 because the conversion from cm^2 to m^2 is different than the conversion of cm to m!
+            f.write("\nkelp area m^2: " + str(kcm * 0.0001))
             f.write("\nkelp area acres: " + str(kacres))
             f.write("\nno kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
             print("kelp area (cm^2):" + str(kcm))
