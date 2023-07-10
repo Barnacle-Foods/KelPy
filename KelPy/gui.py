@@ -1,7 +1,7 @@
 # Kelpy gui file
 # File created: 7/12/2022
 # Author: Chet Russell
-# Last edited: 6/26/2023 - Chet Russell
+# Last edited: 7/10/2023 - Chet Russell
 
 """
 NOTICE: I am aware that a LOT of the code in the mainwin function is spaghetti
@@ -17,6 +17,8 @@ import sys
 import threading
 import PySimpleGUI as sg
 
+# resource_path fuction
+# https://stackoverflow.com/a/13790741
 
 def resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
