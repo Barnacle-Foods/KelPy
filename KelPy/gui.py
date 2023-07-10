@@ -242,9 +242,7 @@ def mainwin():
                             loading = True
                             # ort.update("Orthorectification: DONE")
                         except:
-                            # Cleaning up masks in the event of an error
                             loading = False
-                            core.clean_masks(values["imgdir"])
                             sg.popup("ERROR 1: Problem processing request.")
 
         # Running Kelpomatic
@@ -279,7 +277,6 @@ def mainwin():
 
                                 except:
                                     loading = False
-                                    # Cleaning up masks in the event of an error
                                     sg.popup("ERROR 2: Problem processing request.")
                             else:
                                 sg.popup("ERROR: GSD not an integer value.")
@@ -321,7 +318,6 @@ def mainwin():
                             loading = True
 
                         except:
-                            # Cleaning up masks in the event of an error
                             loading = False
                             sg.popup(
                                 "ERROR 3: There already exists a folder of that name."
