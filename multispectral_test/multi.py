@@ -1,20 +1,17 @@
 # multi.py
 # Chet Russell
-# Last edited: 6/30/2023
+# Last edited: 7/10/2023
 # This file calculates the NDVI of an orthomosaic, and returns an image of the
 # NDVI. The output of this code is Figure_1.png & Figure_2.png.
 #
 # This code has been tailored from:
 # https://www.earthdatascience.org/courses/use-data-open-source-python/multispectral-remote-sensing/vegetation-indices-in-python/calculate-NDVI-python/
 
-import os
 from matplotlib.colors import ListedColormap
 
 import matplotlib.pyplot as plt
 import numpy as np
 import rioxarray as rxr
-import geopandas as gpd
-import earthpy as et
 import earthpy.spatial as es
 import earthpy.plot as ep
 
