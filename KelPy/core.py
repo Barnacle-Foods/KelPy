@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 6/26/2023 - Chet Russell
+# Last edited: 7/10/2023 - Chet Russell
 
 import os
 import shutil
@@ -14,6 +14,7 @@ import yaml
 import tempfile
 import gui
 import glob
+import tifftools
 
 """ ------------------------ MASKER FUNCTION ---------------------------
 This function takes an image directory and a pixel buffer and runs the
@@ -348,3 +349,15 @@ def compress_tif(imgname: str, savename: str):
     img = Image.open(imgname)
     rgb_im = img.convert("RGB")
     rgb_im.save(savename, optimize=True, quality=65)
+
+
+# New merge_orthos function
+# Will eventually be implemented into the GUI.
+
+
+def merge_orthos(o1: str, o2: str, name: str):
+    input1 = tifftools.read_tiff(o1)
+    input2 = tifftools.read_tiff(o2)
+    # Add input2 to input1
+    input1["ifds"].extend(input2["ifds"])
+    tifftools.write_tiff(input1, name)
