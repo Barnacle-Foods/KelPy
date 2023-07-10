@@ -313,27 +313,24 @@ wanted to do.
 
 
 def calculate_gsd(pdfdir: str):
-    pdfFileObj = open(pdfdir, "rb")
-    # create a pdf reader object
-    pdfReader = PyPDF2.PdfReader(pdfFileObj)
-    # creating a page object
-    pageObj = pdfReader.pages[0]
-    # extract text from page
-    pdf = pageObj.extract_text()
+    with open(pdfdir, "rb") as pdfFileObj:
+        # create a pdf reader object
+        pdfReader = PyPDF2.PdfReader(pdfFileObj)
+        # creating a page object
+        pageObj = pdfReader.pages[0]
+        # extract text from page
+        pdf = pageObj.extract_text()
 
-    words = pdf.split(" ")
-    # if "(GSD)" in words:
-    #    pos = words.index("(GSD)")
+        words = pdf.split(" ")
+        # if "(GSD)" in words:
+        #    pos = words.index("(GSD)")
 
-    try:
-        pos = words.index("(GSD)")
-        res = words[pos + 1]
+        try:
+            pos = words.index("(GSD)")
+            res = words[pos + 1]
 
-    except:
-        print("Cannot find ground sampling distance.")
-
-    # closing the pdf file object
-    pdfFileObj.close()
+        except:
+            print("Cannot find ground sampling distance.")
 
     return res
 
@@ -346,9 +343,9 @@ This function takes a .tif file and compresses it, turning it into a viewable JP
 
 
 def compress_tif(imgname: str, savename: str):
-    img = Image.open(imgname)
-    rgb_im = img.convert("RGB")
-    rgb_im.save(savename, optimize=True, quality=65)
+    with Image.open(imgname) as img:
+        rgb_im = img.convert("RGB")
+        rgb_im.save(savename, optimize=True, quality=65)
 
 
 # New merge_orthos function
