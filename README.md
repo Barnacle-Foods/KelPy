@@ -12,7 +12,7 @@
 
 ## Installation
 
-You must have [OpenDroneMap](https://github.com/OpenDroneMap/ODM) installed locally on Windows to run KelPy.
+You must have administrator privileges on windows to run KelPy.
   
 
 ### Flags and variables
