@@ -180,12 +180,19 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
     ext1 = ""
     ext2 = ""
 
-    if spec == False or spec == "0":
+    if spec or spec == "1":
         ext1 = "\\colormap.tif"
         ext2 = "\\kelp_area.txt"
-    elif spec == True or spec == "1":
+    else:
         ext1 = "\\species_colormap.tif"
         ext2 = "\\species_kelp_area.txt"
+
+    # if spec == False or spec == "0":
+    #    ext1 = "\\colormap.tif"
+    #    ext2 = "\\kelp_area.txt"
+    # elif spec or spec == "1":
+    #    ext1 = "\\species_colormap.tif"
+    #    ext2 = "\\species_kelp_area.txt"
 
     # Calling the kelpomatic tool
     kelp_o_matic.find_kelp(ortho, kom, species=spec, use_gpu=True)
@@ -198,17 +205,8 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
 
         with rasterio.open(komp + ext1, "w", **meta) as dst:
             dst.write(shade, indexes=1)
-            # If species differentiation is turned off
-            if spec == False or spec == "0":
-                dst.write_colormap(
-                    1,
-                    {
-                        0: (0, 0, 255, 255),
-                        1: (255, 255, 0, 255),
-                    },
-                )
             # If species differentiation is turned on
-            elif spec == True or spec == "1":
+            if spec or spec == "1":
                 dst.write_colormap(
                     1,
                     {
@@ -216,6 +214,15 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                         1: (255, 255, 0, 255),
                         2: (0, 255, 0, 255),
                         3: (255, 0, 0, 255),
+                    },
+                )
+            # If species differentiation is turned off
+            else:
+                dst.write_colormap(
+                    1,
+                    {
+                        0: (0, 0, 255, 255),
+                        1: (255, 255, 0, 255),
                     },
                 )
 
@@ -252,19 +259,8 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
 
     # Printing the kelp surface area onto a .txt file
     with open(komp + ext2, "a") as f:
-        # If species differentiation is turned off
-        if spec == False or spec == "0":
-            f.write("kelp area cm^2: " + str(kcm))
-            # This should be .0001 because the conversion from cm^2 to m^2 is different than the conversion of cm to m!
-            f.write("\nkelp area m^2: " + str(kcm * 0.0001))
-            f.write("\nkelp area acres: " + str(kacres))
-            f.write("\nno kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
-            print("kelp area (cm^2):" + str(kcm))
-            print("kelp area (acres):" + str(kacres))
-            print("no kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
-
-        # If species differentiation is turned off
-        elif spec == True or spec == "1":
+        # If species differentiation is turned on
+        if spec or spec == "1":
             f.write(
                 "bull kelp area cm^2="
                 + str(bcm)
@@ -290,6 +286,16 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                 + ", giant kelp pixels="
                 + str(giant)
             )
+        # If species differentiation is turned off
+        else:
+            f.write("kelp area cm^2: " + str(kcm))
+            # This should be .0001 because the conversion from cm^2 to m^2 is different than the conversion of cm to m!
+            f.write("\nkelp area m^2: " + str(kcm * 0.0001))
+            f.write("\nkelp area acres: " + str(kacres))
+            f.write("\nno kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
+            print("kelp area (cm^2):" + str(kcm))
+            print("kelp area (acres):" + str(kacres))
+            print("no kelp pixels=" + str(no_kelp) + ", kelp pixels=" + str(kelp))
 
 
 """ --------------------- EXTRACT_ESSENTIALS FUNCTION ----------------------
