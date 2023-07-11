@@ -42,6 +42,16 @@ def masker(imgdir: str, pb: int):
         os.rename(infilename, newname)
 
 
+# yaml file to run OpenDroneMap
+def write_yaml_to_file(py_obj, filename):
+    with open(
+        f"{filename}.yaml",
+        "w",
+    ) as f:
+        yaml.dump(py_obj, f, sort_keys=False)
+    print("Written to file successfully")
+
+
 """ --------------------- ORTHORECTIFICATION FUNCTION ---------------------- 
 This function takes an image directory, a results directory, a quality value,
 a crop value, a kmz boolean value and an exif boolean value. It takes all of
@@ -82,13 +92,6 @@ def orthorec(
     exif: bool,
     pb: int,
 ):
-    imglist = []
-
-    # Places each image filepath into the imglist list.
-    for filenames in os.listdir(imgdir):
-        tmp = imgdir + "/" + filenames
-        imglist.append(tmp)
-
     # Using a temporary directory to store all files associated with OpenDroneMap
     with tempfile.TemporaryDirectory() as tmpdirname:
         print("created temporary directory", tmpdirname)
@@ -132,15 +135,6 @@ def orthorec(
         yaml_output = yaml.dump(data, sort_keys=False)
 
         print(yaml_output)
-
-        # yaml file to run OpenDroneMap
-        def write_yaml_to_file(py_obj, filename):
-            with open(
-                f"{filename}.yaml",
-                "w",
-            ) as f:
-                yaml.dump(py_obj, f, sort_keys=False)
-            print("Written to file successfully")
 
         write_yaml_to_file(data, gui.resource_path("ODM\\settings"))
 
