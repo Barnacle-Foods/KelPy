@@ -47,6 +47,8 @@ class UnitTests(unittest.TestCase):
     def test_calculate_gsd(self):
         self.assertEqual(core.calculate_gsd(cwd + "\\test_data\\report_test.pdf"), 3.0)
 
+    # This function tests the validity of the kelp_counter function in core.py
+    # It copies the existing test colormap to a temporary directory, then checks to see if the value it returns is correct
     def test_kelp_counter(self):
         with tempfile.TemporaryDirectory() as tmpdirname:
             shutil.copy(cwd + "\\test_data\\colormap_test.tif", tmpdirname)
