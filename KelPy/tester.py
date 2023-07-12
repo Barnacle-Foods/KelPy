@@ -1,7 +1,7 @@
 # Kelpy unit tests
 # File created: 7/11/2023
 # Author: Chet Russell
-# Last edited: 7/11/2023 - Chet Russell
+# Last edited: 7/12/2023 - Chet Russell
 
 import unittest
 import tempfile
@@ -30,7 +30,7 @@ class UnitTests(unittest.TestCase):
     #    self.assertFalse(core.orthorec("", "", "high", 0, False, "sift", False, True))
 
     # This function tests the write_yaml_to_file function in core.py
-    # All this does is create two identical yaml files, then runs the function, then checks if they are the same
+    # All this does is create two identical yaml files, then runs the write_yaml_to_file function, then checks if they are the same
     def test_yaml(self):
         with tempfile.TemporaryDirectory() as tmpdirname:
             with open(tmpdirname + "\\test1.yaml", "w") as f:

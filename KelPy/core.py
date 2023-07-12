@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 7/10/2023 - Chet Russell
+# Last edited: 7/12/2023 - Chet Russell
 
 import os
 import shutil
@@ -42,7 +42,14 @@ def masker(imgdir: str, pb: int):
         os.rename(infilename, newname)
 
 
-# yaml file to run OpenDroneMap
+""" ---------------- WRITE_YAML_TO_FILE FUNCTION ---------------------------
+This function takes a dictionary and then overwrites it to an 
+    existing yaml file.
+:param py_obj: The dictionary where values are stored.
+:param pb: The name of the yaml file that will be overwritten.
+------------------------------------------------------------------------ """
+
+
 def write_yaml_to_file(py_obj, filename):
     with open(
         f"{filename}.yaml",
