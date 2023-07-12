@@ -20,9 +20,9 @@ class UnitTests(unittest.TestCase):
     # It essentially checks if it generates an identical mask with the given example image in the test_imgs folder
     def test_masker(self):
         with tempfile.TemporaryDirectory() as tmpdirname:
-            shutil.copy(cwd + "\\test_imgs\\glint_test.JPG", tmpdirname)
+            shutil.copy(cwd + "\\test_data\\glint_test.JPG", tmpdirname)
             core.masker(tmpdirname, 5)
-            with open(cwd + "\\test_imgs\\glint_test_mask.JPG", "rb") as img:
+            with open(cwd + "\\test_data\\glint_test_mask.JPG", "rb") as img:
                 with open(tmpdirname + "\\glint_test_mask.JPG", "rb") as img_msk:
                     self.assertEqual(img.read(), img_msk.read())
 
@@ -38,12 +38,17 @@ class UnitTests(unittest.TestCase):
             with open(tmpdirname + "\\test2.yaml", "w") as f:
                 pass
             data = {
-                "This is test": 1,
+                "This is a test": 1,
             }
             core.write_yaml_to_file(data, tmpdirname + "\\test2")
             self.assertFalse(
                 filecmp.cmp(tmpdirname + "\\test1.yaml", tmpdirname + "\\test2.yaml")
             )
+
+    # This function tests the validity of the calculate_gsd function in core.py
+    # There is a sample report in the test_data folder that it checks
+    def test_calculate_gsd(self):
+        self.assertEqual(core.calculate_gsd(cwd + "\\test_data\\report.pdf"), 3.0)
 
 
 if __name__ == "__main__":

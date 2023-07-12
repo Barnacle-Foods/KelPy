@@ -188,13 +188,6 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
         ext1 = "\\species_colormap.tif"
         ext2 = "\\species_kelp_area.txt"
 
-    # if spec == False or spec == "0":
-    #    ext1 = "\\colormap.tif"
-    #    ext2 = "\\kelp_area.txt"
-    # elif spec or spec == "1":
-    #    ext1 = "\\species_colormap.tif"
-    #    ext2 = "\\species_kelp_area.txt"
-
     # Calling the kelpomatic tool
     kelp_o_matic.find_kelp(ortho, kom, species=spec, use_gpu=True)
 
@@ -339,7 +332,7 @@ def calculate_gsd(pdfdir: str):
         except:
             print("Cannot find ground sampling distance.")
 
-    return res
+    return float(res)
 
 
 """ ------------------------- COMPRESS_TIF FUNCTION -----------------------

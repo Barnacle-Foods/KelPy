@@ -87,7 +87,7 @@ def all_function_thread(
         exif=exif,
         pb=pb,
     )
-    value = float(core.calculate_gsd(newdir + "/report.pdf"))
+    value = core.calculate_gsd(newdir + "/report.pdf")
     core.seg(ortho=ortho, komp=komp, gsd=value, spec=spec)
     window.write_event_value("-THREAD DONE-", "")
 
