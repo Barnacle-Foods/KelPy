@@ -50,4 +50,4 @@ You must have administrator privileges on windows to run KelPy.
 
   https://github.com/HakaiInstitute/kelp-o-matic
 
-  https://github.com/OpenDroneMap/NodeODM
+  https://github.com/OpenDroneMap/ODM
