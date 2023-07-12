@@ -171,25 +171,17 @@ color designating the lack of kelp. It then spits out area calculations.
 
 
 def seg(ortho: str, komp: str, gsd: float, spec: bool):
-    Image.MAX_IMAGE_PIXELS = 9999999999
-    kelp = 0
-    no_kelp = 0
-    bull = 0
-    giant = 0
-
     kom = komp + "/kelpomatic.tif"
-    ext1 = ""
-    ext2 = ""
-
-    if spec or spec == "1":
-        ext1 = "\\colormap.tif"
-        ext2 = "\\kelp_area.txt"
-    else:
-        ext1 = "\\species_colormap.tif"
-        ext2 = "\\species_kelp_area.txt"
 
     # Calling the kelpomatic tool
     kelp_o_matic.find_kelp(ortho, kom, species=spec, use_gpu=True)
+
+    if spec or spec == "1":
+        ext1 = "\\species_colormap.tif"
+        ext2 = "\\species_kelp_area.txt"
+    else:
+        ext1 = "\\colormap.tif"
+        ext2 = "\\kelp_area.txt"
 
     # Writing the colormap
     with rasterio.Env():
@@ -220,17 +212,20 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                     },
                 )
 
+    kelp_counter(komp, ext1, ext2, spec, gsd)
+
+
+def kelp_counter(src: str, ext1: str, ext2: str, spec: bool, gsd: float):
+    Image.MAX_IMAGE_PIXELS = 9999999999
+    kelp = 0
+    no_kelp = 0
+    bull = 0
+    giant = 0
+
     # Calculating the kelp pixels
-    with Image.open(komp + ext1) as im:
-        # If species differentiation is turned off
-        if spec == False or spec == "0":
-            for pixel in im.getdata():
-                if pixel == 0:  # if your image is RGB (if RGBA, (0, 0, 0, 255) or so
-                    no_kelp += 1
-                elif pixel == 1:
-                    kelp += 1
+    with Image.open(src + ext1) as im:
         # If species differentiation is turned on
-        elif spec == True or spec == "1":
+        if spec or spec == "1":
             for pixel in im.getdata():
                 if pixel == 0:  # if your image is RGB (if RGBA, (0, 0, 0, 255) or so
                     no_kelp += 1
@@ -240,6 +235,13 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
                     giant += 1
                 elif pixel == 3:
                     bull += 1
+        # If species differentiation is turned off
+        else:
+            for pixel in im.getdata():
+                if pixel == 0:  # if your image is RGB (if RGBA, (0, 0, 0, 255) or so
+                    no_kelp += 1
+                elif pixel == 1:
+                    kelp += 1
 
     # Calculating the area of the kelp in cm & acres
     kcm = kelp * (gsd * gsd)
@@ -252,7 +254,7 @@ def seg(ortho: str, komp: str, gsd: float, spec: bool):
     gacres = gcm * 0.000000024711
 
     # Printing the kelp surface area onto a .txt file
-    with open(komp + ext2, "a") as f:
+    with open(src + ext2, "a") as f:
         # If species differentiation is turned on
         if spec or spec == "1":
             f.write(

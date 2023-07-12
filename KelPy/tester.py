@@ -26,9 +26,6 @@ class UnitTests(unittest.TestCase):
                 with open(tmpdirname + "\\glint_test_mask.JPG", "rb") as img_msk:
                     self.assertEqual(img.read(), img_msk.read())
 
-    # def test_ortho(self):
-    #    self.assertFalse(core.orthorec("", "", "high", 0, False, "sift", False, True))
-
     # This function tests the write_yaml_to_file function in core.py
     # All this does is create two identical yaml files, then runs the write_yaml_to_file function, then checks if they are the same
     def test_yaml(self):
@@ -48,7 +45,18 @@ class UnitTests(unittest.TestCase):
     # This function tests the validity of the calculate_gsd function in core.py
     # There is a sample report in the test_data folder that it checks
     def test_calculate_gsd(self):
-        self.assertEqual(core.calculate_gsd(cwd + "\\test_data\\report.pdf"), 3.0)
+        self.assertEqual(core.calculate_gsd(cwd + "\\test_data\\report_test.pdf"), 3.0)
+
+    def test_kelp_counter(self):
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            shutil.copy(cwd + "\\test_data\\colormap_test.tif", tmpdirname)
+            core.kelp_counter(
+                tmpdirname, "\\colormap_test.tif", "\\kelp_area.txt", False, 1.1
+            )
+            with open(tmpdirname + "\\kelp_area.txt") as f:
+                rows = list(f)
+                print(rows)
+                self.assertEqual(rows[3][-6:], "=24775")
 
 
 if __name__ == "__main__":
