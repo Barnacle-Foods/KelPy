@@ -13,6 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 # Use a dict to sort the values needed?
 
 class Ui_MainWindow(object):
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(313, 437)
@@ -43,12 +44,14 @@ class Ui_MainWindow(object):
         self.imageFolder_select_0 = QtWidgets.QPushButton(self.tab)
         self.imageFolder_select_0.setGeometry(QtCore.QRect(140, 10, 75, 21))
         self.imageFolder_select_0.setObjectName("imageFolder_select_0")
-        self.imageFolder_select_0.clicked.connect(self.dir_select)
+        self.imageFolder_select_0.clicked.connect(self.image_dir_select_0)
+        self.imageFolder_0 = ''
 
         self.downloadFolder_select_0 = QtWidgets.QPushButton(self.tab)
         self.downloadFolder_select_0.setGeometry(QtCore.QRect(140, 50, 75, 21))
         self.downloadFolder_select_0.setObjectName("downloadFolder_select_0")
-        self.downloadFolder_select_0.clicked.connect(self.dir_select)
+        self.downloadFolder_select_0.clicked.connect(self.download_dir_select_0)
+        self.downloadFolder_0 = ''
 
         self.resultsFolder_name_label_0 = QtWidgets.QLabel(self.tab)
         self.resultsFolder_name_label_0.setGeometry(QtCore.QRect(20, 90, 101, 16))
@@ -65,7 +68,8 @@ class Ui_MainWindow(object):
         self.pixelBuff_select_0 = QtWidgets.QSpinBox(self.tab)
         self.pixelBuff_select_0.setGeometry(QtCore.QRect(140, 130, 42, 21))
         self.pixelBuff_select_0.setMaximum(10)
-        self.pixelBuff_select_0.setObjectName("pixelBuff_select_0")
+        self.pixelBuff_select_0.setMaximum(10)
+        self.pixelBuff_select_0.setValue(5)
         
         self.quality_label_0 = QtWidgets.QLabel(self.tab)
         self.quality_label_0.setGeometry(QtCore.QRect(80, 170, 41, 16))
@@ -99,8 +103,7 @@ class Ui_MainWindow(object):
         self.specClass_select_0.setObjectName("specClass_select_0")
         self.specClass_select_0.addItem("")
         self.specClass_select_0.addItem("")
-        self.specClass_select_0.addItem("")
-        self.specClass_select_0.setItemText(2, "")
+        self.specClass_select_0.setItemText(1, "")
 
         self.run_0 = QtWidgets.QPushButton(self.tab)
         self.run_0.setGeometry(QtCore.QRect(100, 290, 91, 31))
@@ -358,11 +361,23 @@ class Ui_MainWindow(object):
 
     def run_main(self):
         print("Running...")
+        image_folder = self.imageFolder_0
+        download_folder = self.downloadFolder_0
         results = self.resultsFolder_name_0.text()
+        pixelbuff = self.pixelBuff_select_0.value()
+        quality = self.quality_select_0.currentText()
+        crop = self.crop_select_0.value()
+        spec_class = self.specClass_select_0.currentText()
+        print(spec_class)
 
-    def dir_select(self):
-        self = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Directory"))
-        print(self)
+    def image_dir_select_0(self):
+        self.imageFolder_0 = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Directory"))
+        print(self.imageFolder_0)
+
+    def download_dir_select_0(self):
+        self.downloadFolder_0 = str(QtWidgets.QFileDialog.getExistingDirectory(None, "Select Directory"))
+        print(self.downloadFolder_0)
+
 
     #def run0(self):
 
