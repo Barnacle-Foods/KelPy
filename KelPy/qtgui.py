@@ -12,6 +12,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import os
+
+import core
+
 # Use a dict to sort the values needed?
 
 
@@ -411,9 +415,6 @@ class Ui_MainWindow(object):
             self.tabWidget.indexOf(self.tab_4), _translate("MainWindow", "Merge")
         )
 
-    def the_button_was_clicked(self):
-        print("Clicked!")
-
     def run_main(self):
         print("Running all")
         d = {
@@ -425,7 +426,18 @@ class Ui_MainWindow(object):
             "crop": self.crop_select_0.value(),
             "spec_class": self.specClass_select_0.currentText(),
         }
+        if d.get("spec_class") == "False":
+            d.update({"spec_class" : False})
+        else:
+            d.update({"spec_class" : True})
         print(d)
+        final_folder = d.get("download_folder") + "/" + d.get("results")
+        os.mkdir(final_folder)
+        core.orthorec(imgdir=d.get("image_folder"), dwndir=final_folder, quality=d.get("quality"), crop=d.get("crop"), kmz=False, ft="sift", exif=True, pb=d.get("pixelbuff"))
+        print("Orthorectification done")
+        value = core.calculate_gsd(final_folder + "/report.pdf")
+        core.seg(ortho=final_folder + "/odm_orthophoto.tif", komp=final_folder, gsd=value, spec=d.get("spec_class"))
+        print("Done.")
 
     def run_ortho(self):
         print("Running ortho")
@@ -439,6 +451,11 @@ class Ui_MainWindow(object):
             "feat_alg": self.featAlg_select.currentText(),
         }
         print(d)
+        final_folder = d.get("download_folder") + "/" + d.get("results")
+        os.mkdir(final_folder)
+        core.orthorec(imgdir=d.get("image_folder"), dwndir=final_folder, quality=d.get("quality"), crop=d.get("crop"), kmz=False, ft=d.get("feat_alg"), exif=True, pb=d.get("pixelbuff"))
+        print("Orthorectification done")
+
 
     def run_seg(self):
         print("Running segmentation")
@@ -448,7 +465,14 @@ class Ui_MainWindow(object):
             "GSD" : self.gsd_select.value(),
             "spec_class": self.specClass_select_0.currentText(),
         }
+        if d.get("spec_class") == "False":
+            d.update({"spec_class" : False})
+        else:
+            d.update({"spec_class" : True})
         print(d)
+        core.seg(ortho=d.get("ortho_file"), komp=d.get("results_folder"), gsd=d.get("GSD"), spec=d.get("spec_class"))
+        print("Segmentation done")
+
 
     def run_merge(self):
         print("Running merge")
@@ -459,6 +483,8 @@ class Ui_MainWindow(object):
             "results_name": self.resultName.text(),
         }
         print(d)
+        core.merge_orthos(o1=d.get("ortho_1"), o2=d.get("ortho_2"), dir=d.get("results_folder"), name=d.get("results_name"))
+        print("Merge done")
 
     def image_dir_select_0(self):
         self.imageFolder_0 = str(
@@ -507,8 +533,6 @@ class Ui_MainWindow(object):
     def ortho_file_select_2(self):
         self.ortho_file_2 = QtWidgets.QFileDialog.getOpenFileName(None, "Select File")
         print(self.ortho_file_2[0])
-
-    # def run0(self):
 
 
 if __name__ == "__main__":

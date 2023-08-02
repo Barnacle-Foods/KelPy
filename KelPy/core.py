@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 7/12/2023 - Chet Russell
+# Last edited: 8/2/2023 - Chet Russell
 
 import os
 import shutil
@@ -354,9 +354,9 @@ def compress_tif(imgname: str, savename: str):
 # Will eventually be implemented into the GUI.
 
 
-def merge_orthos(o1: str, o2: str, name: str):
+def merge_orthos(o1: str, o2: str, dir: str, name: str):
     input1 = tifftools.read_tiff(o1)
     input2 = tifftools.read_tiff(o2)
     # Add input2 to input1
-    input1["ifds"].extend(input2["ifds"])
-    tifftools.write_tiff(input1, name)
+    input1['ifds'].extend(input2['ifds'])
+    tifftools.write_tiff(input1, dir + "\\" + name + '.tiff')
