@@ -135,7 +135,7 @@ class Ui_MainWindow(object):
         icon1 = QtGui.QIcon()
         icon1.addPixmap(
             QtGui.QPixmap(
-                "C:\\Users\\chet_\\Documents\\GUI\\../../Downloads/icons8-close-window-16.png"
+                os.getcwd() + "\\graphics\\icons8-close-window-16.png"
             ),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off,
