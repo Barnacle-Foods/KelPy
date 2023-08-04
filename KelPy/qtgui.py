@@ -133,7 +133,13 @@ class Ui_MainWindow(object):
         self.pushButton.setGeometry(QtCore.QRect(230, 10, 20, 20))
         self.pushButton.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("C:\\Users\\chet_\\Documents\\GUI\\../../Downloads/icons8-close-window-16.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(
+            QtGui.QPixmap(
+                "C:\\Users\\chet_\\Documents\\GUI\\../../Downloads/icons8-close-window-16.png"
+            ),
+            QtGui.QIcon.Normal,
+            QtGui.QIcon.Off,
+        )
         self.pushButton.setIcon(icon1)
         self.pushButton.setFlat(True)
         self.pushButton.setEnabled(False)
@@ -246,12 +252,6 @@ class Ui_MainWindow(object):
         self.progressBar_1.setProperty("value", 0)
         self.progressBar_1.setObjectName("progressBar_1")
 
-        
-
-
-        
-
-
         self.pushButton_4 = QtWidgets.QPushButton(self.tab_2)
         self.pushButton_4.setGeometry(QtCore.QRect(230, 10, 20, 20))
         self.pushButton_4.setText("")
@@ -277,8 +277,6 @@ class Ui_MainWindow(object):
         self.pushButton_6.setFlat(True)
         self.pushButton_6.setObjectName("pushButton_6")
         self.pushButton_6.clicked.connect(self.pushButton_6_click)
-
-
 
         self.tabWidget.addTab(self.tab_2, "")
 
@@ -538,7 +536,7 @@ class Ui_MainWindow(object):
         )
 
     def run_main(self):
-        print("Running all") 
+        print("Running all")
         d = {
             "image_folder": self.imageFolder_0,
             "download_folder": self.downloadFolder_0,
@@ -720,7 +718,6 @@ class Ui_MainWindow(object):
     def pushButton_3_click(self):
         self.resultsFolder_name_0.clear()
         print("Cleared 3")
-
 
     def pushButton_4_click(self):
         self.imageFolder_1 = ""
