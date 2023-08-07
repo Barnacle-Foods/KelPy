@@ -571,6 +571,9 @@ class Ui_MainWindow(object):
             gsd=value,
             spec=d.get("spec_class"),
         )
+        self.pushButton_1_click()
+        self.pushButton_2_click()
+        self.pushButton_3_click()
         print("Done.")
 
     def run_ortho(self):
@@ -597,6 +600,9 @@ class Ui_MainWindow(object):
             exif=True,
             pb=d.get("pixelbuff"),
         )
+        self.pushButton_4_click()
+        self.pushButton_5_click()
+        self.pushButton_6_click()
         print("Orthorectification done")
 
     def run_seg(self):
@@ -618,6 +624,8 @@ class Ui_MainWindow(object):
             gsd=d.get("GSD"),
             spec=d.get("spec_class"),
         )
+        self.pushButton_7_click()
+        self.pushButton_8_click()
         print("Segmentation done")
 
     def run_merge(self):
@@ -635,6 +643,10 @@ class Ui_MainWindow(object):
             dir=d.get("results_folder"),
             name=d.get("results_name"),
         )
+        self.pushButton_9_click()
+        self.pushButton_10_click()
+        self.pushButton_11_click()
+        self.pushButton_12_click()
         print("Merge done")
 
     def image_dir_select_0(self):

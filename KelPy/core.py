@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 8/2/2023 - Chet Russell
+# Last edited: 8/7/2023 - Chet Russell
 
 import os
 import shutil
@@ -15,6 +15,7 @@ import tempfile
 import gui
 import glob
 import tifftools
+import subprocess
 
 """ ------------------------ MASKER FUNCTION ---------------------------
 This function takes an image directory and a pixel buffer and runs the
@@ -146,7 +147,9 @@ def orthorec(
         write_yaml_to_file(data, gui.resource_path("ODM\\settings"))
 
         # Running OpenDroneMap on windows natively (without Docker!!!)
-        os.system(gui.resource_path("ODM\\run.bat"))
+        #os.system(gui.resource_path("ODM\\run.bat"))
+        subprocess.run(gui.resource_path("ODM\\run.bat"), shell=True)
+
 
         # Grab the pdf and tif file and send them to the download folder
         extract_essentials(tmpdirname, dwndir)
