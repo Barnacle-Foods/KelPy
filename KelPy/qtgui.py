@@ -17,6 +17,8 @@ import os
 
 import core
 
+import time
+
 import traceback
 
 # This class is inspired by: https://www.pythonguis.com/tutorials/multithreading-pyqt-applications-qthreadpool/
@@ -651,8 +653,12 @@ class Ui_MainWindow(object):
 
     def run_main(self, progress_callback):
         print("Running all")
+        self.run_0.setEnabled(False)
+        self.run_1.setEnabled(False)
+        self.run_2.setEnabled(False)
+        self.run_3.setEnabled(False)
         self.prog_label_0.setText("Orthorectifying...")
-        progress_callback.emit(0)
+        progress_callback.emit(5)
 
         d = {
             "image_folder": self.imageFolder_0,
@@ -681,9 +687,8 @@ class Ui_MainWindow(object):
             exif=True,
             pb=d.get("pixelbuff"),
         )
-        progress_callback.emit(50)
-        #self.progressBar_0.setValue(50)
         print("Orthorectification done")
+        progress_callback.emit(50)
 
         self.prog_label_0.setText("Identification...")
         value = core.calculate_gsd(final_folder + "/report.pdf")
@@ -699,6 +704,10 @@ class Ui_MainWindow(object):
         self.pushButton_3_click()
         progress_callback.emit(100)
         
+        self.run_0.setEnabled(True)
+        self.run_1.setEnabled(True)
+        self.run_2.setEnabled(True)
+        self.run_3.setEnabled(True)
         print("Done.")
 
     def run_main_worker(self):
@@ -710,7 +719,12 @@ class Ui_MainWindow(object):
 
     def run_ortho(self, progress_callback):
         print("Running ortho")
+        self.run_0.setEnabled(False)
+        self.run_1.setEnabled(False)
+        self.run_2.setEnabled(False)
+        self.run_3.setEnabled(False)
         self.prog_label_1.setText("Orthorectifying...")
+        progress_callback.emit(5)
         d = {
             "image_folder": self.imageFolder_1,
             "download_folder": self.downloadFolder_1,
@@ -739,6 +753,10 @@ class Ui_MainWindow(object):
         self.pushButton_4_click()
         self.pushButton_5_click()
         self.pushButton_6_click()
+        self.run_0.setEnabled(True)
+        self.run_1.setEnabled(True)
+        self.run_2.setEnabled(True)
+        self.run_3.setEnabled(True)
         print("Orthorectification done")
     
     def run_ortho_worker(self):
@@ -750,7 +768,12 @@ class Ui_MainWindow(object):
 
     def run_seg(self, progress_callback):
         print("Running segmentation")
+        self.run_0.setEnabled(False)
+        self.run_1.setEnabled(False)
+        self.run_2.setEnabled(False)
+        self.run_3.setEnabled(False)
         self.prog_label_2.setText("Identification")
+        progress_callback.emit(5)
         d = {
             "ortho_file": self.ortho_file_0[0],
             "results_folder": self.resultsFolder_0,
@@ -773,6 +796,10 @@ class Ui_MainWindow(object):
         self.prog_label_2.setText("Done.")
         self.pushButton_7_click()
         self.pushButton_8_click()
+        self.run_0.setEnabled(True)
+        self.run_1.setEnabled(True)
+        self.run_2.setEnabled(True)
+        self.run_3.setEnabled(True)
         print("Segmentation done")
 
     def run_seg_worker(self):
@@ -782,8 +809,12 @@ class Ui_MainWindow(object):
         worker.signals.progress.connect(self.progress_fn_2)
         self.threadpool.start(worker)
 
-    def run_merge(self, progress_callback):
+    def run_merge(self):
         print("Running merge")
+        self.run_0.setEnabled(False)
+        self.run_1.setEnabled(False)
+        self.run_2.setEnabled(False)
+        self.run_3.setEnabled(False)
         d = {
             "ortho_1": self.ortho_file_1[0],
             "ortho_2": self.ortho_file_2[0],
@@ -801,6 +832,10 @@ class Ui_MainWindow(object):
         self.pushButton_10_click()
         self.pushButton_11_click()
         self.pushButton_12_click()
+        self.run_0.setEnabled(True)
+        self.run_1.setEnabled(True)
+        self.run_2.setEnabled(True)
+        self.run_3.setEnabled(True)
         print("Merge done")
 
     def run_merge_worker(self):
