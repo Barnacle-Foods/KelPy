@@ -19,6 +19,7 @@ import core
 
 import traceback
 
+# This class is inspired by: https://www.pythonguis.com/tutorials/multithreading-pyqt-applications-qthreadpool/
 class WorkerSignals(QObject):
     '''
     Defines the signals available from a running worker thread.
@@ -44,6 +45,7 @@ class WorkerSignals(QObject):
     progress = pyqtSignal(int)
 
 
+# This class is inspired by: https://www.pythonguis.com/tutorials/multithreading-pyqt-applications-qthreadpool/
 class Worker(QRunnable):
     '''
     Worker thread
