@@ -10,7 +10,6 @@ import os
 import filecmp
 
 import core
-import gui
 
 cwd = os.getcwd()  # Get the current working directory (cwd)
 

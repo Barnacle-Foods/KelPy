@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 8/7/2023 - Chet Russell
+# Last edited: 8/11/2023 - Chet Russell
 
 import os
 import shutil
@@ -10,9 +10,9 @@ import kelp_o_matic
 import rasterio
 import glint_mask_tools
 from PIL import Image
+import qtgui
 import yaml
 import tempfile
-import gui
 import glob
 import tifftools
 import subprocess
@@ -144,11 +144,11 @@ def orthorec(
 
         print(yaml_output)
 
-        write_yaml_to_file(data, gui.resource_path("ODM\\settings"))
+        write_yaml_to_file(data, qtgui.resource_path("ODM\\settings"))
 
         # Running OpenDroneMap on windows natively (without Docker!!!)
         #os.system(gui.resource_path("ODM\\run.bat"))
-        subprocess.run(gui.resource_path("ODM\\run.bat"), shell=True)
+        subprocess.run(qtgui.resource_path("ODM\\run.bat"), shell=True)
 
 
         # Grab the pdf and tif file and send them to the download folder
