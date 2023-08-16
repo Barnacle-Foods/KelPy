@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 8/11/2023 - Chet Russell
+# Last edited: 8/16/2023 - Chet Russell
 
 import os
 import shutil
@@ -47,7 +47,7 @@ def masker(imgdir: str, pb: int):
 This function takes a dictionary and then overwrites it to an 
     existing yaml file.
 :param py_obj: The dictionary where values are stored.
-:param pb: The name of the yaml file that will be overwritten.
+:param filename: The name of the yaml file that will be overwritten.
 ------------------------------------------------------------------------ """
 
 
@@ -144,11 +144,11 @@ def orthorec(
 
         print(yaml_output)
 
-        write_yaml_to_file(data, qtgui.resource_path("ODM\\settings"))
+        write_yaml_to_file(data, qtgui.resource_path("C:\\ODM\\settings"))
 
         # Running OpenDroneMap on windows natively (without Docker!!!)
         #os.system(gui.resource_path("ODM\\run.bat"))
-        subprocess.run(qtgui.resource_path("ODM\\run.bat"), shell=True)
+        subprocess.run(qtgui.resource_path("C:\\ODM\\run.bat"), shell=True)
 
 
         # Grab the pdf and tif file and send them to the download folder
