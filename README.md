@@ -31,9 +31,6 @@ You must have administrator privileges on windows to run KelPy.
 
   Species classification - [Kelp-o-matic](https://hakai-segmentation.readthedocs.io/en/latest/lib.html#module-hakai_segmentation) option to determine whether or not to differentiate between bullkelp and giantkelp.
 
-
-### Flags for independent identification
-
   Orthomosaic File - The orthomosaic image you want to process.
 
   Results Folder - The folder you want to save your results to.
