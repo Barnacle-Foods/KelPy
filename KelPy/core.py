@@ -1,7 +1,7 @@
 # Kelpy core file
 # File created: 6/28/2022
 # Author: Chet Russell
-# Last edited: 8/16/2023 - Chet Russell
+# Last edited: 8/18/2023 - Chet Russell
 
 import os
 import shutil
@@ -147,9 +147,8 @@ def orthorec(
         write_yaml_to_file(data, qtgui.resource_path("C:\\ODM\\settings"))
 
         # Running OpenDroneMap on windows natively (without Docker!!!)
-        #os.system(gui.resource_path("ODM\\run.bat"))
+        # os.system(gui.resource_path("ODM\\run.bat"))
         subprocess.run(qtgui.resource_path("C:\\ODM\\run.bat"), shell=True)
-
 
         # Grab the pdf and tif file and send them to the download folder
         extract_essentials(tmpdirname, dwndir)
@@ -353,13 +352,18 @@ def compress_tif(imgname: str, savename: str):
         rgb_im.save(savename, optimize=True, quality=65)
 
 
-# New merge_orthos function
-# Will eventually be implemented into the GUI.
+""" ------------------------- MERGE_ORTHOS FUNCTION -----------------------
+This function takes two .tif files and combines them into one .tif file.
+:param o1: The path where the first .tif is stored.
+:param o2: The path where the second .tif is stored.
+:param dir: The path where the merged .tif is downloaded to.
+:param name: The name of the merged .tif.
+------------------------------------------------------------------------ """
 
 
 def merge_orthos(o1: str, o2: str, dir: str, name: str):
     input1 = tifftools.read_tiff(o1)
     input2 = tifftools.read_tiff(o2)
     # Add input2 to input1
-    input1['ifds'].extend(input2['ifds'])
-    tifftools.write_tiff(input1, dir + "\\" + name + '.tiff')
+    input1["ifds"].extend(input2["ifds"])
+    tifftools.write_tiff(input1, dir + "\\" + name + ".tiff")
